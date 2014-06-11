@@ -6,6 +6,8 @@ V 1.0 - 2014-06
 MB85RC from Fujitsu is a I2C Ferroelectric Random Access Memory (FRAM). Read/write endurance for each memory slot : 10^12 cycles.
 16 bit adresses, 8 bits data slots.
 
+Supports 64K, 128K, 256K & 512K devices. Works for 1M devices when considering each device as 2 differents 512K devices (see datasheet: 17 bits addresses of which MSB is replacing A0 device address bit).
+
 [MB85RC chips](http://www.fujitsu.com/us/semiconductors/memory/fram/#serial2) Fujitsu's page
 
 ## Features ##
@@ -33,9 +35,7 @@ MB85RC from Fujitsu is a I2C Ferroelectric Random Access Memory (FRAM). Read/wri
 | | Manufacturer: 0x00A, ProductID: 0x758, DensityCode: 0x07, Maxaddress: 131072, Density: 1024, R/W cycles: 10^13 |
 
 ## Adresses ##
-Devices address : b1010 + A2 + A1 + A0. Support 64K, 128K, 256K & 512K devices
-
-Works for 1M devices when considering each device as 2 differents 512K devices (see datasheet: 17 bits addresses of which MSB is replacing A0 device address bit).
+Devices address : b1010 + A2 + A1 + A0.
 
 All devices are pulling down internaly A2, A1 & A0. Default address is b1010000 (0x50) - exception 1M chips which seems to be a double 512K devices in a single package
 
