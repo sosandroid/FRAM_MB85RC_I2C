@@ -8,13 +8,18 @@ MB85RC from Fujitsu is a I2C Ferroelectric Random Access Memory (FRAM). Read/wri
 
 Supports 64K, 128K, 256K & 512K devices. Works for 1M devices when considering each device as 2 differents 512K devices (see datasheet: 17 bits addresses of which MSB is replacing A0 device address bit).
 
-[MB85RC chips](http://www.fujitsu.com/us/semiconductors/memory/fram/#serial2) Fujitsu's page
+[MB85RCxxxx](http://www.fujitsu.com/us/semiconductors/memory/fram/#serial2) Fujitsu's page
 
 ## Features ##
 - Write 1 byte
-- Write n bytes (up to 256 per call - maximum supported by Arduino's Wire lib)
+- Write n bytes
+- Read 1 byte
 - Read n bytes (up to 256 per call - maximum supported by Arduino's Wire lib)
 - Get device information
+	- 1: Manufacturer ID
+	- 2: Product ID
+	- 3: Density code
+	- 4: Density human readable
 - Manage write protect pin
 - Erase memory (set all chip to 0x00)
 - Debug mode manageable from .h file

@@ -223,6 +223,27 @@ byte FRAM_MB85RC_I2C::readArray (uint16_t framAddr, byte items, uint8_t values[]
   return result;
 }
 
+/**************************************************************************/
+/*!
+    @brief  Reads one byte from the specified FRAM address
+
+    @params[in] i2cAddr
+                The I2C address of the FRAM memory chip (1010+A2+A1+A0)
+    @params[in] framAddr
+                The 16-bit address to read from in FRAM memory
+	@params[out] *values
+				data read from memory
+    @returns    
+				return code of Wire.endTransmission()
+*/
+/**************************************************************************/
+byte FRAM_MB85RC_I2C::readByte (uint16_t framAddr, uint8_t *value) 
+{
+	uint8_t buffer[1];
+	byte result = FRAM_MB85RC_I2C::readArray(framAddr, 1, buffer);
+	*value = buffer[0];
+	return result;
+}
 
 /**************************************************************************/
 /*!
@@ -266,7 +287,7 @@ byte FRAM_MB85RC_I2C::getDeviceIDs(void)
 	
 	/* Shift values to separate IDs */
 	manufacturer = (localbuffer[0] << 4) + (localbuffer[1] >> 4);
-	densitycode = (localbuffer[1] & 0x0F);
+	densitycode = (uint16_t)(localbuffer[1] & 0x0F);
 	productid = ((localbuffer[1] & 0x0F) << 8) + localbuffer[2];
 	
 	switch (densitycode) {
@@ -296,6 +317,42 @@ byte FRAM_MB85RC_I2C::getDeviceIDs(void)
 			break;
 	}
   return result;
+}
+
+/**************************************************************************/
+/*!
+    @brief  Reads the Manufacturer ID and the Product ID frm the IC
+
+    @params[in]   idtype
+				  1: Manufacturer ID, 2: ProductID, 3:density code, 4:density
+	@params[out]  *id
+                  The 16 bits ID value
+    @returns
+				  0: success
+				  1: error
+*/
+/**************************************************************************/
+byte FRAM_MB85RC_I2C::getOneDeviceID(int idType, uint16_t *id) 
+{
+	switch (idType) {
+		case 1:
+			*id = manufacturer;
+			break;
+		case 2:
+			*id = productid;
+			break;
+		case 3:
+			*id = densitycode;
+			break;
+		case 4:
+			*id = density;
+			break;
+		default:
+			*id = 0;
+			return 1;
+			break;
+	}
+	return 0;
 }
 
 /**************************************************************************/

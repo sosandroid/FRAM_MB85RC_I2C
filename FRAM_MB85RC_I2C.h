@@ -75,8 +75,10 @@ class FRAM_MB85RC_I2C {
 	byte	checkDevice(void);
 	byte	writeArray (uint16_t framAddr, byte items, uint8_t value[]);
 	byte	writeByte (uint16_t framAddr, uint8_t value);  
-	byte	readArray  (uint16_t framAddr, byte items, uint8_t value[]);
+	byte	readArray (uint16_t framAddr, byte items, uint8_t value[]);
+	byte	readByte (uint16_t framAddr, uint8_t *value);
 	byte	getDeviceIDs(void);
+	byte	getOneDeviceID(int idType, uint16_t *id);
 	boolean	isReady(void);
 	boolean	getWPStatus(void);
 	byte	enableWP(void);
@@ -88,7 +90,7 @@ class FRAM_MB85RC_I2C {
 	boolean	_framInitialised;
 	uint16_t	manufacturer;
 	uint16_t	productid; 
-	uint8_t	densitycode;
+	uint16_t	densitycode;
 	uint16_t	density;
 	uint16_t	maxaddress;
 
