@@ -18,15 +18,15 @@ Page for MB85RC chips http://www.fujitsu.com/us/semiconductors/memory/fram/#seri
 
 
 ## Devices ##
-MB85RC64A	http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC64A-DS501-00019-2v0-E.pdf
+- MB85RC64A	http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC64A-DS501-00019-2v0-E.pdf
 			Manufacturer: 0x00A, ProductID: 0x???, DensityCode: 0x03, Maxaddress: 8192, Density: 64, R/W cycles: 10^12
-MB85RC128A	http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/e513110.pdf
+- MB85RC128A	http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/e513110.pdf
 			Manufacturer: 0x00A, ProductID: 0x???, DensityCode: 0x04, Maxaddress: 16384, Density: 128, R/W cycles: 10^12
-MB85RC256V 	http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC256V-DS501-00017-3v0-E.pdf
+- MB85RC256V 	http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC256V-DS501-00017-3v0-E.pdf
 			Manufacturer: 0x00A, ProductID: 0x510, DensityCode: 0x05, Maxaddress: 32768, Density: 256, R/W cycles: 10^12
-MB85RC512T	http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC512T-DS501-00028-0v01-E.pdf
+- MB85RC512T	http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC512T-DS501-00028-0v01-E.pdf
 			Manufacturer: 0x00A, ProductID: 0x658, DensityCode: 0x06, Maxaddress: 65536, Density: 512, R/W cycles: 10^13
-MB85RC1MT	http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC1MT-DS501-00027-0v01-E.pdf
+- MB85RC1MT	http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC1MT-DS501-00027-0v01-E.pdf
 			Manufacturer: 0x00A, ProductID: 0x758, DensityCode: 0x07, Maxaddress: 131072, Density: 1024, R/W cycles: 10^13
 
 ## Adresses ##
