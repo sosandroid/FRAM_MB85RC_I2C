@@ -35,9 +35,9 @@ Support 64K, 128K, 256K & 512K devices
 Works for 1M devices when considering each device as 2 differents 512K devices (see datasheet: 17 bits addresses of which MSB is replacing A0 device address bit)
 All devices are pulling down internaly A2, A1 & A0. Default address is b1010000 (0x50) - exception 1M chips which seems to be a double 512K devices in a single package
 
-## Todo / Not supported ##
-- tested only against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895
-- tested on Arduino Mega 
-Please comment about other devices (Memory & Arduino Boards)
+## Testing ##
+- Tested only against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895
+- Tested on Arduino Mega 
+- Please comment about other devices (Memory & Arduino Boards)
 
 
