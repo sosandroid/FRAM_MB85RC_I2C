@@ -4,8 +4,9 @@ V 1.0 - 2014-06
 
 
 MB85RC from Fujitsu is a I2C Ferroelectric Random Access Memory (FRAM). Read/write endurance for each memory slot : 10^12 cycles.
-16 bit adresses, 8 bits data slots
-Page for MB85RC chips http://www.fujitsu.com/us/semiconductors/memory/fram/#serial2
+16 bit adresses, 8 bits data slots.
+
+[MB85RC chips](http://www.fujitsu.com/us/semiconductors/memory/fram/#serial2) Fujitsu's page
 
 ## Features ##
 - Write 1 byte
