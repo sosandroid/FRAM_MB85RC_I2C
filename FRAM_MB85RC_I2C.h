@@ -73,11 +73,18 @@ class FRAM_MB85RC_I2C {
 	FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin);
 	
 	byte	checkDevice(void);
-	byte	writeArray (uint16_t framAddr, byte items, uint8_t value[]);
-	byte	writeByte (uint16_t framAddr, uint8_t value);  
+	byte	readBit(uint16_t framAddr, uint8_t bitNb, byte *bit);
+	byte	setOneBit(uint16_t framAddr, uint8_t bitNb);
+	byte	clearOneBit(uint16_t framAddr, uint8_t bitNb);
+	byte	toggleBit(uint16_t framAddr, uint8_t bitNb);
 	byte	readArray (uint16_t framAddr, byte items, uint8_t value[]);
+	byte	writeArray (uint16_t framAddr, byte items, uint8_t value[]);
 	byte	readByte (uint16_t framAddr, uint8_t *value);
-	byte	getDeviceIDs(void);
+	byte	writeByte (uint16_t framAddr, uint8_t value);
+	//byte	readWord(uint16_t framAddr, uint16_t *value);
+	//byte	writeWord(uint16_t framAddr, uint16_t value);
+	//byte	readLong(uint16_t framAddr, uint32_t *value);
+	//byte	writeLong(uint16_t framAddr, uint32_t value);
 	byte	getOneDeviceID(int idType, uint16_t *id);
 	boolean	isReady(void);
 	boolean	getWPStatus(void);
@@ -94,11 +101,12 @@ class FRAM_MB85RC_I2C {
 	uint16_t	density;
 	uint16_t	maxaddress;
 
-	int wpPin;
-	boolean wpStatus;
-	
-	byte initWP(boolean wp);
-	byte deviceIDs2Serial(void);
+	int	wpPin;
+	boolean	wpStatus;
+
+	byte	getDeviceIDs(void);	
+	byte	initWP(boolean wp);
+	byte	deviceIDs2Serial(void);
 };
 
 #endif

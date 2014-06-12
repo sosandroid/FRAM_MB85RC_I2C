@@ -11,10 +11,11 @@ Supports 64K, 128K, 256K & 512K devices. Works for 1M devices when considering e
 [MB85RCxxxx](http://www.fujitsu.com/us/semiconductors/memory/fram/#serial2) Fujitsu's page
 
 ## Features ##
-- Write 1 byte
-- Write n bytes
-- Read 1 byte
-- Read n bytes (up to 256 per call - maximum supported by Arduino's Wire lib)
+- Manage single bit (read, set, clear, toggle) from a byte
+- Write one 8-bits, 16-bits or 32-bits value
+- Write one array of bytes 
+- Read one 8-bits, 16-bits or 32-bits value
+- Read one array of bytes (up to 256 per call - maximum supported by Arduino's Wire lib)
 - Get device information
 	- 1: Manufacturer ID
 	- 2: Product ID
@@ -22,7 +23,7 @@ Supports 64K, 128K, 256K & 512K devices. Works for 1M devices when considering e
 	- 4: Density human readable
 - Manage write protect pin
 - Erase memory (set all chip to 0x00)
-- Debug mode manageable from .h file
+- Debug mode manageable from header file
 
 
 ## Devices ##
@@ -44,7 +45,17 @@ Devices address : b1010 + A2 + A1 + A0.
 
 All devices are pulling down internaly A2, A1 & A0. Default address is b1010000 (0x50) - exception 1M chips which seems to be a double 512K devices in a single package
 
+## Errors ##
+The error management is eased by returning a byte value for almost each method. Most of the time, this is the status code from Wire.endTransmission() function.
+- 0: success
+- 1: data too long to fit in transmit buffer or other error
+- 2: received NACK on transmit of address
+- 3: received NACK on transmit of data
+- 4: other error
+- 9: bit position out of range
+
 ## Testing ##
+- 16-bit & 32-bits methods not compiling
 - Tested only against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895
 - Tested on Arduino Mega 
 - Please comment about other devices (Memory & Arduino Boards)
