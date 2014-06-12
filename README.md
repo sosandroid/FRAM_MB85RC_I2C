@@ -55,7 +55,6 @@ The error management is eased by returning a byte value for almost each method. 
 - 9: bit position out of range
 
 ## Testing ##
-- 16-bit & 32-bits methods not compiling
 - Tested only against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895
 - Tested on Arduino Mega 
 - Please comment about other devices (Memory & Arduino Boards)

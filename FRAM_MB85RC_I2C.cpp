@@ -351,14 +351,14 @@ byte FRAM_MB85RC_I2C::toggleBit(uint16_t framAddr, uint8_t bitNb)
 				return code of Wire.endTransmission()
 */
 /**************************************************************************/
-//byte readWord(uint16_t framAddr, uint16_t *value)
-//{
-//	uint8_t buffer[2];
-//	byte result = FRAM_MB85RC_I2C::readArray(framAddr, 2, buffer);
-//	*value = ((uint16_t) buffer[0] << 8) + (uint16_t)buffer[1];
-//	return result;
-//}
-//
+byte FRAM_MB85RC_I2C::readWord(uint16_t framAddr, uint16_t *value)
+{
+	uint8_t buffer[2];
+	byte result = FRAM_MB85RC_I2C::readArray(framAddr, 2, buffer);
+	*value = ((uint16_t) buffer[0] << 8) + (uint16_t)buffer[1];
+	return result;
+}
+
 /**************************************************************************/
 /*!
     @brief  Write a 16bits value from the specified FRAM address
@@ -371,11 +371,11 @@ byte FRAM_MB85RC_I2C::toggleBit(uint16_t framAddr, uint8_t bitNb)
 				return code of Wire.endTransmission()
 */
 /**************************************************************************/
-//byte writeWord(uint16_t framAddr, uint16_t value)
-//{
-//	uint8_t buffer[2] = {(value >> 8), (value & 0xFF)};
-//	return FRAM_MB85RC_I2C::writeArray(framAddr, 2, buffer);
-//}
+byte FRAM_MB85RC_I2C::writeWord(uint16_t framAddr, uint16_t value)
+{
+	uint8_t buffer[2] = {(value >> 8), (value & 0xFF)};
+	return FRAM_MB85RC_I2C::writeArray(framAddr, 2, buffer);
+}
 /**************************************************************************/
 /*!
     @brief  Read a 32bits value from the specified FRAM address
@@ -388,14 +388,14 @@ byte FRAM_MB85RC_I2C::toggleBit(uint16_t framAddr, uint8_t bitNb)
 				return code of Wire.endTransmission()
 */
 /**************************************************************************/
-//byte readLong(uint16_t framAddr, uint32_t *value)
-//{
-//	uint8_t buffer[4];
-//	byte result = FRAM_MB85RC_I2C::readArray(framAddr, 4, buffer);
-//	*value = ((uint32_t) buffer[0] << 24) + ((uint32_t)buffer[1] << 16) + ((uint32_t)buffer[2] << 8) + (uint32_t)buffer[3];
-//	return result;
-//
-//}
+byte FRAM_MB85RC_I2C::readLong(uint16_t framAddr, uint32_t *value)
+{
+	uint8_t buffer[4];
+	byte result = FRAM_MB85RC_I2C::readArray(framAddr, 4, buffer);
+	*value = ((uint32_t) buffer[0] << 24) + ((uint32_t)buffer[1] << 16) + ((uint32_t)buffer[2] << 8) + (uint32_t)buffer[3];
+	return result;
+
+}
 /**************************************************************************/
 /*!
     @brief  Write a 32bits value to the specified FRAM address
@@ -408,15 +408,15 @@ byte FRAM_MB85RC_I2C::toggleBit(uint16_t framAddr, uint8_t bitNb)
 				return code of Wire.endTransmission()
 */
 /**************************************************************************/
-//byte writeLong(uint16_t framAddr, uint32_t value)
-//{
-//	uint8_t buffer[4];
-//	buffer[0] = (uint8_t)(value >> 24);
-//	buffer[1] = (uint8_t)((value & 0xFFFFFF) >> 16);
-//	buffer[1] = (uint8_t)((value & 0xFFFF) >> 8);
-//	buffer[1] = (uint8_t)(value & 0xFF);
-//	return FRAM_MB85RC_I2C::writeArray(framAddr, 4, buffer);
-//}
+byte FRAM_MB85RC_I2C::writeLong(uint16_t framAddr, uint32_t value)
+{
+	uint8_t buffer[4];
+	buffer[0] = (uint8_t)(value >> 24);
+	buffer[1] = (uint8_t)((value & 0xFFFFFF) >> 16);
+	buffer[1] = (uint8_t)((value & 0xFFFF) >> 8);
+	buffer[1] = (uint8_t)(value & 0xFF);
+	return FRAM_MB85RC_I2C::writeArray(framAddr, 4, buffer);
+}
 /**************************************************************************/
 /*!
     @brief  Reads the Manufacturer ID and the Product ID frm the IC
