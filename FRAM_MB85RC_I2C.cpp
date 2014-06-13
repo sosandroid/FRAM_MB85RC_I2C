@@ -501,7 +501,9 @@ byte FRAM_MB85RC_I2C::enableWP(void) {
 		wpStatus = true;
 		result = 0;
 	}
-	result = 10;
+	else {
+		result = 10;
+	}
 	return result;
 }
 /**************************************************************************/
@@ -525,7 +527,9 @@ byte FRAM_MB85RC_I2C::disableWP() {
 		wpStatus = false;
 		result = 0;
 	}
-	result = 10;
+	else {
+		result = 10;
+	}
 	return result;
 }
 /**************************************************************************/
