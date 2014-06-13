@@ -1,6 +1,8 @@
 Arduino library for I2C FRAM MB85RC series from Fujitsu
 ==============
-V 1.0 - 2014-06
+
+    v1.0 - First release
+	v1.0.1 - Robustness enhancement
 
 
 MB85RC from Fujitsu is a I2C Ferroelectric Random Access Memory (FRAM). Read/write endurance for each memory slot : 10^12 cycles.
@@ -48,15 +50,19 @@ All devices are pulling down internaly A2, A1 & A0. Default address is b1010000 
 ## Errors ##
 The error management is eased by returning a byte value for almost each method. Most of the time, this is the status code from Wire.endTransmission() function.
 - 0: success
-- 1: data too long to fit in transmit buffer or other error
+- 1: data too long to fit in transmit buffer
 - 2: received NACK on transmit of address
 - 3: received NACK on transmit of data
 - 4: other error
+- 5: Not referenced ID
+- 7: memory device unidentified
+- 8: number of bytes asked to read null
 - 9: bit position out of range
+- 10: not permitted operation
 
 ## Testing ##
 - Tested only against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895
-- Tested on Arduino Mega 
+- Tested on Arduino Mega with Arduino IDE 1.0.5
 - Please comment about other devices (Memory & Arduino Boards)
 
 

@@ -9,6 +9,7 @@
     @section  HISTORY
 
     v1.0 - First release
+	v1.0.1 - Robustness enhancement
 */
 /**************************************************************************/
 
@@ -27,60 +28,12 @@
 /**************************************************************************/
 FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(void) 
 {
-		_framInitialised = false;
-		i2c_addr = MB85RC_DEFAULT_ADDRESS;
-		wpPin = MB85RC_DEFAULT_WP_PIN;
-		
-		byte deviceFound = FRAM_MB85RC_I2C::checkDevice();
-		initWP(MB85RC_DEFAULT_WP_STATUS);
-
-    #ifdef SERIAL_DEBUG
-		if (Serial){
-			Serial.println("FRAM_MB85RC_I2C object created");
-			Serial.print("I2C device address 0x");
-			Serial.println(i2c_addr, HEX);
-			Serial.print("WP pin number ");
-			Serial.println(wpPin, DEC);
-			Serial.print("Write protect management: ");
-			if(MB85RC_MANAGE_WP) Serial.println("true");
-			if(!MB85RC_MANAGE_WP) Serial.println("false");
-			if(deviceFound == 0) {
-				Serial.println("Memory Chip connected");
-				FRAM_MB85RC_I2C::deviceIDs2Serial();
-			}
-			if(deviceFound != 0) Serial.println("Memory Chip NOT FOUND");
-			Serial.println("...... ...... ......");
-		}
-    #endif
+		FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(MB85RC_DEFAULT_ADDRESS, MB85RC_DEFAULT_WP_STATUS, MB85RC_DEFAULT_WP_PIN);
 }
 
 FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(uint8_t address, boolean wp) 
 {
-		_framInitialised = false;
-		i2c_addr = address;
-		wpPin = MB85RC_DEFAULT_WP_PIN;
-		
-		byte deviceFound = FRAM_MB85RC_I2C::checkDevice();
-		initWP(wp);
-
-    #ifdef SERIAL_DEBUG
-		if (Serial){
-			Serial.println("FRAM_MB85RC_I2C object created");
-			Serial.print("I2C device address 0x");
-			Serial.println(i2c_addr, HEX);
-			Serial.print("WP pin number ");
-			Serial.println(wpPin, DEC);
-			Serial.print("Write protect management: ");
-			if(MB85RC_MANAGE_WP) Serial.println("true");
-			if(!MB85RC_MANAGE_WP) Serial.println("false");
-			if(deviceFound == 0) {
-				Serial.println("Memory Chip connected");
-				FRAM_MB85RC_I2C::deviceIDs2Serial();
-			}
-			if(deviceFound != 0) Serial.println("Memory Chip NOT FOUND");
-			Serial.println("...... ...... ......");
-		}
-    #endif
+		FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(address, wp, MB85RC_DEFAULT_WP_PIN);
 }
 
 FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin) 
@@ -100,13 +53,19 @@ FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin)
 			Serial.print("WP pin number ");
 			Serial.println(wpPin, DEC);
 			Serial.print("Write protect management: ");
-			if(MB85RC_MANAGE_WP) Serial.println("true");
-			if(!MB85RC_MANAGE_WP) Serial.println("false");
+			if(MB85RC_MANAGE_WP) {
+				Serial.println("true");
+			}
+			else {
+				Serial.println("false");
+			}
 			if(deviceFound == 0) {
 				Serial.println("Memory Chip connected");
 				FRAM_MB85RC_I2C::deviceIDs2Serial();
 			}
-			if(deviceFound != 0) Serial.println("Memory Chip NOT FOUND");
+			else {
+				Serial.println("Memory Chip NOT FOUND");
+			}
 			Serial.println("...... ...... ......");
 		}
     #endif
@@ -120,7 +79,7 @@ FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin)
 /*!
     Check if device is connected at address @i2c_addr
 	returns 0 = device found
-			1 = device not found
+			7 = device not found
 */
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::checkDevice(void) 
@@ -132,12 +91,11 @@ byte FRAM_MB85RC_I2C::checkDevice(void)
   if ((result == 0) && (manufacturer = 0x00A) && (densitycode > 0x02) && (densitycode < 0x08) && (maxaddress != 0)) {
 		//densitycode 0x03 = 64K chip, densitycode 0x07 = 1M chip -- check datasheets & readme
 		_framInitialised = true;
-		return 0;
   }
   else {
 		_framInitialised = false;
-		return 1;
   }
+  return result;
 }
 
 
@@ -210,17 +168,22 @@ byte FRAM_MB85RC_I2C::writeByte (uint16_t framAddr, uint8_t value)
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::readArray (uint16_t framAddr, byte items, uint8_t values[])
 {
-  if (items == 0) items = 1;
-  Wire.beginTransmission(i2c_addr);
-  Wire.write(framAddr >> 8);
-  Wire.write(framAddr & 0xFF);
-  byte result = Wire.endTransmission();
-
-  Wire.requestFrom(i2c_addr, (uint8_t)items);
-  for (byte i=0; i < items; i++) {
-	values[i] = Wire.read();
-  }
-  return result;
+	byte result;
+	if (items == 0) {
+		result = 8; //number of bytes asked to read null
+	}
+	else {
+		Wire.beginTransmission(i2c_addr);
+		Wire.write(framAddr >> 8);
+		Wire.write(framAddr & 0xFF);
+		result = Wire.endTransmission();
+		
+		Wire.requestFrom(i2c_addr, (uint8_t)items);
+		for (byte i=0; i < items; i++) {
+			values[i] = Wire.read();
+		}
+	}
+	return result;
 }
 
 /**************************************************************************/
@@ -262,10 +225,15 @@ byte FRAM_MB85RC_I2C::readByte (uint16_t framAddr, uint8_t *value)
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::readBit(uint16_t framAddr, uint8_t bitNb, byte *bit)
 {
-	if (bitNb > 7) return 9;
-	uint8_t buffer[1];
-	byte result = FRAM_MB85RC_I2C::readArray(framAddr, 1, buffer);
-	*bit = bitRead(buffer[0], bitNb);
+	byte result;
+	if (bitNb > 7) {
+		result = 9;
+	}
+	else {
+		uint8_t buffer[1];
+		result = FRAM_MB85RC_I2C::readArray(framAddr, 1, buffer);
+		*bit = bitRead(buffer[0], bitNb);
+	}
 	return result;
 }
 
@@ -284,11 +252,17 @@ byte FRAM_MB85RC_I2C::readBit(uint16_t framAddr, uint8_t bitNb, byte *bit)
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::setOneBit(uint16_t framAddr, uint8_t bitNb)
 {
-	if (bitNb > 7) return 9;
-	uint8_t buffer[1];
-	byte result = FRAM_MB85RC_I2C::readArray(framAddr, 1, buffer);
-	bitSet(buffer[0], bitNb);
-	return FRAM_MB85RC_I2C::writeArray(framAddr, 1, buffer);
+	byte result;
+	if (bitNb > 7)  {
+		result = 9;
+	}
+	else {
+		uint8_t buffer[1];
+		result = FRAM_MB85RC_I2C::readArray(framAddr, 1, buffer);
+		bitSet(buffer[0], bitNb);
+		result = FRAM_MB85RC_I2C::writeArray(framAddr, 1, buffer);
+	}
+	return result;
 }
 /**************************************************************************/
 /*!
@@ -305,11 +279,17 @@ byte FRAM_MB85RC_I2C::setOneBit(uint16_t framAddr, uint8_t bitNb)
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::clearOneBit(uint16_t framAddr, uint8_t bitNb)
 {
-	if (bitNb > 7) return 9;
-	uint8_t buffer[1];
-	byte result = FRAM_MB85RC_I2C::readArray(framAddr, 1, buffer);
-	bitClear(buffer[0], bitNb);
-	return FRAM_MB85RC_I2C::writeArray(framAddr, 1, buffer);
+	byte result;
+	if (bitNb > 7) {
+		result = 9;
+	}
+	else {
+		uint8_t buffer[1];
+		result = FRAM_MB85RC_I2C::readArray(framAddr, 1, buffer);
+		bitClear(buffer[0], bitNb);
+		result = FRAM_MB85RC_I2C::writeArray(framAddr, 1, buffer);
+	}
+	return result;
 }
 /**************************************************************************/
 /*!
@@ -326,18 +306,24 @@ byte FRAM_MB85RC_I2C::clearOneBit(uint16_t framAddr, uint8_t bitNb)
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::toggleBit(uint16_t framAddr, uint8_t bitNb)
 {
-	if (bitNb > 7) return 9;
-	uint8_t buffer[1];
-	byte result = FRAM_MB85RC_I2C::readArray(framAddr, 1, buffer);
-	
-	if ( (buffer[0] & (1 << bitNb)) == (1 << bitNb) )
-	{
-		bitClear(buffer[0], bitNb);
+	byte result;
+	if (bitNb > 7) {
+		result = 9;
 	}
 	else {
-		bitSet(buffer[0], bitNb);
+		uint8_t buffer[1];
+		result = FRAM_MB85RC_I2C::readArray(framAddr, 1, buffer);
+		
+		if ( (buffer[0] & (1 << bitNb)) == (1 << bitNb) )
+		{
+			bitClear(buffer[0], bitNb);
+		}
+		else {
+			bitSet(buffer[0], bitNb);
+		}
+		result = FRAM_MB85RC_I2C::writeArray(framAddr, 1, buffer);
 	}
-	return FRAM_MB85RC_I2C::writeArray(framAddr, 1, buffer);
+	return result;
 }
 /**************************************************************************/
 /*!
@@ -430,27 +416,37 @@ byte FRAM_MB85RC_I2C::writeLong(uint16_t framAddr, uint32_t value)
 				  1: error
 */
 /**************************************************************************/
-byte FRAM_MB85RC_I2C::getOneDeviceID(int idType, uint16_t *id) 
+byte FRAM_MB85RC_I2C::getOneDeviceID(uint8_t idType, uint16_t *id) 
 {
+	byte result;
+	const uint8_t manuf = 1;
+	const uint8_t prod = 2;
+	const uint8_t densc = 3;
+	const uint8_t densi = 4;
+	
 	switch (idType) {
-		case 1:
+		case manuf:
 			*id = manufacturer;
+			result = 0;
 			break;
-		case 2:
+		case prod:
 			*id = productid;
+			result = 0;
 			break;
-		case 3:
+		case densc:
 			*id = densitycode;
+			result = 0;
 			break;
-		case 4:
+		case densi:
 			*id = density;
+			result = 0;
 			break;
 		default:
 			*id = 0;
-			return 1;
+			result = 5;
 			break;
 	}
-	return 0;
+	return result;
 }
 
 /**************************************************************************/
@@ -499,12 +495,14 @@ boolean FRAM_MB85RC_I2C::getWPStatus(void) {
 */
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::enableWP(void) {
+	byte result;
 	if (MB85RC_MANAGE_WP) {
 		digitalWrite(wpPin,HIGH);
 		wpStatus = true;
-		return 0;
+		result = 0;
 	}
-	return 1;
+	result = 10;
+	return result;
 }
 /**************************************************************************/
 /*!
@@ -521,12 +519,14 @@ byte FRAM_MB85RC_I2C::enableWP(void) {
 */
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::disableWP() {
+	byte result;
 	if (MB85RC_MANAGE_WP) {
 		digitalWrite(wpPin,LOW);
 		wpStatus = false;
-		return 0;
+		result = 0;
 	}
-	return 1;
+	result = 10;
+	return result;
 }
 /**************************************************************************/
 /*!
@@ -536,11 +536,12 @@ byte FRAM_MB85RC_I2C::disableWP() {
                   Outputs erasing results to Serial
 	@returns
 				  0: success
-				  1: error writing at a certain position
+				  1-4: error writing at a certain position
 */
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::eraseDevice(void) {
 		byte result = 0;
+		uint16_t i = 0;
 		
 		#ifdef SERIAL_DEBUG
 			if (Serial){
@@ -548,28 +549,26 @@ byte FRAM_MB85RC_I2C::eraseDevice(void) {
 			}
 		#endif
 		
-		for (uint16_t i = 0; i < maxaddress; i++) {
-			result = FRAM_MB85RC_I2C::writeByte(i, 0x00);
-			
-			if (result != 0) {
-				#ifdef SERIAL_DEBUG
-					if (Serial){
-						Serial.print("ERROR: device erasing stopped at position ");
-						Serial.println(i, DEC);
-						Serial.println("...... ...... ......");
-					}
-				#endif
-				return result;
-			}
+		while((i < maxaddress) && (result == 0)){
+		  result = FRAM_MB85RC_I2C::writeByte(i, 0x00);
+		  i++;
 		}
+		
 	
 		#ifdef SERIAL_DEBUG
 			if (Serial){
-				Serial.println("device erased");
-				Serial.println("...... ...... ......");
+				if (result !=0) {
+						Serial.print("ERROR: device erasing stopped at position ");
+						Serial.println(i, DEC);
+						Serial.println("...... ...... ......");
+				}
+				else {
+						Serial.println("device erased");
+						Serial.println("...... ...... ......");
+				}
 			}
 		#endif
-		return 0;
+		return result;
 }
 
 
@@ -601,6 +600,11 @@ byte FRAM_MB85RC_I2C::getDeviceIDs(void)
 {
 	uint8_t localbuffer[3] = { 0, 0, 0 };
 	uint8_t result;
+	const uint16_t dens64 = 0x03;
+	const uint16_t dens128 = 0x04;
+	const uint16_t dens256 = 0x05;
+	const uint16_t dens512 = 0x06;
+	const uint16_t dens1024 = 0x07;
 	
 	/* Get device IDs sequence                                                                                                  */
 	/* Send 0xF8 to 12C bus. Bit shift to right as beginTransmission() requires a 7bit. beginTransmission() 0 for write => 0xF8 */
@@ -623,29 +627,30 @@ byte FRAM_MB85RC_I2C::getDeviceIDs(void)
 	productid = ((localbuffer[1] & 0x0F) << 8) + localbuffer[2];
 	
 	switch (densitycode) {
-		case 0x03:
+		case dens64:
 			density = 64;
 			maxaddress = 8192;
 			break;
-		case 0x04:
+		case dens128:
 			density = 128;
 			maxaddress = 16384;
 			break;
-		case 0x05:
+		case dens256:
 			density = 256;
 			maxaddress = 32768;
 			break;
-		case 0x06:
+		case dens512:
 			density = 512;
 			maxaddress = 65536;
 			break;
-		case 0x07:
+		case dens1024:
 			density = 1024;
 			maxaddress = 65536; /* should be 2 times greater but we are considering the 1M device as 2 physical 512K devices. */
 			break;
 		default:
 			density = 0; /* means error */
 			maxaddress = 0; /* means error */
+			if (result == 0) result = 7; /*device unidentified, comminication ok*/
 			break;
 	}
   return result;
@@ -660,11 +665,12 @@ byte FRAM_MB85RC_I2C::getDeviceIDs(void)
 	@param[out]	  none
 	@returns
 				  0: success
-				  1: error, debug not activated or Serial not available
+				  4: error, debug not activated or Serial not available
 */
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::deviceIDs2Serial(void) {
-    #ifdef SERIAL_DEBUG
+    byte result = 4;
+	#ifdef SERIAL_DEBUG
 		if (Serial){
 			Serial.print("Manufacturer 0x"); Serial.println(manufacturer, HEX);
 			Serial.print("ProductID 0x"); Serial.println(productid, HEX);
@@ -673,10 +679,10 @@ byte FRAM_MB85RC_I2C::deviceIDs2Serial(void) {
 			if ((manufacturer == 0x00A) && (density != 0))  Serial.println("Device identfied");
 			if ((manufacturer == 0x00A) && (density = 0))  Serial.println("Device NOT identfied");
 			Serial.println("...... ...... ......");
-			return 0;
+			result = 0;
 		}
     #endif
-	return 1;
+	return result;
 }
 
 /**************************************************************************/
@@ -696,17 +702,19 @@ byte FRAM_MB85RC_I2C::deviceIDs2Serial(void) {
 */
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::initWP(boolean wp) {
+	byte result;
 	if (MB85RC_MANAGE_WP) {
 		pinMode(wpPin,OUTPUT);
 		if (wp) {
-			return FRAM_MB85RC_I2C::enableWP();
+			result = FRAM_MB85RC_I2C::enableWP();
 		}
 		else {
-			return FRAM_MB85RC_I2C::disableWP();
+			result = FRAM_MB85RC_I2C::disableWP();
 		}
 	}
 	else {
 		wpStatus = false;
+		result = 0;
 	}
-	return 0;
+	return result;
 }

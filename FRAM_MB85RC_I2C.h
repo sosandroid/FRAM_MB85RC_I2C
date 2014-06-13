@@ -2,6 +2,11 @@
 /*! 
     @file     FRAM_MB85RC_I2C.h
     @author   SOSAndroid.fr (E. Ha.)
+	
+    @section  HISTORY
+
+    v1.0 - First release
+	v1.0.1 - Robustness enhancement
 
     Driver for the MB85RC I2C FRAM from Fujitsu.
 	
@@ -66,6 +71,7 @@
 #define MB85RC_DEFAULT_WP_PIN	13 //write protection pin - active high, write enabled when low
 #define MB85RC_DEFAULT_WP_STATUS  false //false means protection is off - write is enabled
 
+
 class FRAM_MB85RC_I2C {
  public:
 	FRAM_MB85RC_I2C(void);
@@ -85,7 +91,7 @@ class FRAM_MB85RC_I2C {
 	byte	writeWord(uint16_t framAddr, uint16_t value);
 	byte	readLong(uint16_t framAddr, uint32_t *value);
 	byte	writeLong(uint16_t framAddr, uint32_t value);
-	byte	getOneDeviceID(int idType, uint16_t *id);
+	byte	getOneDeviceID(uint8_t idType, uint16_t *id);
 	boolean	isReady(void);
 	boolean	getWPStatus(void);
 	byte	enableWP(void);
