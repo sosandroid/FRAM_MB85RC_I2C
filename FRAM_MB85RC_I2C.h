@@ -7,6 +7,7 @@
 
     v1.0 - First release
 	v1.0.1 - Robustness enhancement
+	v1.0.2 - fix constructor, introducing byte move in memory
 
     Driver for the MB85RC I2C FRAM from Fujitsu.
 	
@@ -87,6 +88,7 @@ class FRAM_MB85RC_I2C {
 	byte	writeArray (uint16_t framAddr, byte items, uint8_t value[]);
 	byte	readByte (uint16_t framAddr, uint8_t *value);
 	byte	writeByte (uint16_t framAddr, uint8_t value);
+	byte	copyByte (uint16_t origAddr, uint16_t destAddr);
 	byte	readWord(uint16_t framAddr, uint16_t *value);
 	byte	writeWord(uint16_t framAddr, uint16_t value);
 	byte	readLong(uint16_t framAddr, uint32_t *value);

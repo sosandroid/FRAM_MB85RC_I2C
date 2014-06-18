@@ -10,6 +10,7 @@
 
     v1.0 - First release
 	v1.0.1 - Robustness enhancement
+	v1.0.2 - fix constructor, introducing byte move in memory
 */
 /**************************************************************************/
 
@@ -43,7 +44,7 @@ FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin)
 		wpPin = pin;
 		
 		byte deviceFound = FRAM_MB85RC_I2C::checkDevice();
-		initWP(wp);
+		byte result = FRAM_MB85RC_I2C::initWP(wp);
 
     #ifdef SERIAL_DEBUG
 		if (Serial){
@@ -207,6 +208,28 @@ byte FRAM_MB85RC_I2C::readByte (uint16_t framAddr, uint8_t *value)
 	*value = buffer[0];
 	return result;
 }
+/**************************************************************************/
+/*!
+    @brief  Copy a byte from one address to another in the memory scope
+
+    @params[in] i2cAddr
+                The I2C address of the FRAM memory chip (1010+A2+A1+A0)
+    @params[in] origAddr
+                The 16-bit address to read from in FRAM memory
+	@params[in] destAddr
+				The 16-bit address to write in FRAM memory
+    @returns    
+				return code of Wire.endTransmission()
+*/
+/**************************************************************************/
+byte FRAM_MB85RC_I2C::copyByte (uint16_t origAddr, uint16_t destAddr) 
+{
+	uint8_t buffer[1];
+	byte result = FRAM_MB85RC_I2C::readByte(origAddr, buffer);
+	result = FRAM_MB85RC_I2C::writeByte(destAddr, buffer[0]);
+	return result;
+}
+
 
 /**************************************************************************/
 /*!

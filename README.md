@@ -3,6 +3,7 @@ Arduino library for I2C FRAM MB85RC series from Fujitsu
 
     v1.0 - First release
 	v1.0.1 - Robustness enhancement
+	v1.0.2 - fix constructor, introducing byte move in memory
 
 
 MB85RC from Fujitsu is a I2C Ferroelectric Random Access Memory (FRAM). Read/write endurance for each memory slot : 10^12 cycles.
@@ -18,6 +19,7 @@ Supports 64K, 128K, 256K & 512K devices. Works for 1M devices when considering e
 - Write one array of bytes 
 - Read one 8-bits, 16-bits or 32-bits value
 - Read one array of bytes (up to 256 per call - maximum supported by Arduino's Wire lib)
+- Move a byte from an address to another
 - Get device information
 	- 1: Manufacturer ID
 	- 2: Product ID
@@ -65,4 +67,10 @@ The error management is eased by returning a byte value for almost each method. 
 - Tested on Arduino Mega with Arduino IDE 1.0.5
 - Please comment about other devices (Memory & Arduino Boards)
 
+## To do ##
+- Create a more robust error management (function to handle that with higher layer)
+- Uses constants as error codes
+- Rework the debug mode
 
+## Credits ##
+- [Kevin Townsend](https://github.com/microbuilder) who inspired this Lib
