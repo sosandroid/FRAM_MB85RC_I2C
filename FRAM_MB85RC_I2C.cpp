@@ -422,8 +422,8 @@ byte FRAM_MB85RC_I2C::writeLong(uint16_t framAddr, uint32_t value)
 	uint8_t buffer[4];
 	buffer[0] = (uint8_t)(value >> 24);
 	buffer[1] = (uint8_t)((value & 0xFFFFFF) >> 16);
-	buffer[1] = (uint8_t)((value & 0xFFFF) >> 8);
-	buffer[1] = (uint8_t)(value & 0xFF);
+	buffer[2] = (uint8_t)((value & 0xFFFF) >> 8);
+	buffer[3] = (uint8_t)(value & 0xFF);
 	return FRAM_MB85RC_I2C::writeArray(framAddr, 4, buffer);
 }
 /**************************************************************************/
