@@ -11,6 +11,7 @@
     v1.0 - First release
 	v1.0.1 - Robustness enhancement
 	v1.0.2 - fix constructor, introducing byte move in memory
+	v1.0.3 - fix writeLong() function
 */
 /**************************************************************************/
 
