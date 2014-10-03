@@ -9,6 +9,7 @@
     @section  HISTORY
 
     v1.0 - First release
+	v1.0.1 - fix constructor call error
 */
 /**************************************************************************/
 
@@ -39,17 +40,20 @@ MYDATA4I2C_t readdata; //data read from memory
 //random address to write from
 uint16_t writeaddress = 0x025;
 
+//Creating object for FRAM chip
+FRAM_MB85RC_I2C mymemory;
 
 void setup() {
 
 	Serial.begin(9600);
 	while (!Serial) ; //wait until Serial ready
 	Wire.begin();
+	
 	byte arraySize = sizeof(MYDATA_t);
 	
     Serial.println("Starting...");
 		
-		
+	mymemory.begin();
 		
 	
 	//init data - load array
@@ -72,14 +76,11 @@ void setup() {
 	Serial.println("...... ...... ......");
 	Serial.println("Init Done - array loaded");
 	Serial.println("...... ...... ......");
-	
-	//Creating object for FRAM chip
-    FRAM_MB85RC_I2C mymemory;
+
 
 
 	//write to FRAM chip
-	byte result;
-    result = mymemory.writeArray(writeaddress, arraySize, mydata.I2CPacket);
+	byte result = mymemory.writeArray(writeaddress, arraySize, mydata.I2CPacket);
 
     if (result == 0) Serial.println("Write Done - array loaded in FRAM chip");
     if (result != 0) Serial.println("Write failed");

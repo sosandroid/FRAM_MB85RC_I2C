@@ -12,6 +12,7 @@
 	v1.0.1 - Robustness enhancement
 	v1.0.2 - fix constructor, introducing byte move in memory
 	v1.0.3 - fix writeLong() function
+	v1.0.4 - fix constructor call error
 */
 /**************************************************************************/
 
@@ -30,12 +31,19 @@
 /**************************************************************************/
 FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(void) 
 {
-		FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(MB85RC_DEFAULT_ADDRESS, MB85RC_DEFAULT_WP_STATUS, MB85RC_DEFAULT_WP_PIN);
+		_framInitialised = false;
+		i2c_addr = MB85RC_DEFAULT_ADDRESS;
+		wpPin = MB85RC_DEFAULT_WP_PIN;
+		byte result = FRAM_MB85RC_I2C::initWP(MB85RC_DEFAULT_WP_STATUS);
+
 }
 
 FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(uint8_t address, boolean wp) 
 {
-		FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(address, wp, MB85RC_DEFAULT_WP_PIN);
+		_framInitialised = false;
+		i2c_addr = address;
+		wpPin = MB85RC_DEFAULT_WP_PIN;
+		byte result = FRAM_MB85RC_I2C::initWP(wp);
 }
 
 FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin) 
@@ -43,11 +51,22 @@ FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin)
 		_framInitialised = false;
 		i2c_addr = address;
 		wpPin = pin;
-		
-		byte deviceFound = FRAM_MB85RC_I2C::checkDevice();
 		byte result = FRAM_MB85RC_I2C::initWP(wp);
+		
+}
+
+/*========================================================================*/
+/*                           PUBLIC FUNCTIONS                             */
+/*========================================================================*/
+
+void FRAM_MB85RC_I2C::begin(void) {
+
+	
+	
+	byte deviceFound = FRAM_MB85RC_I2C::checkDevice();
 
     #ifdef SERIAL_DEBUG
+		if (!Serial) Serial.begin(9600);
 		if (Serial){
 			Serial.println("FRAM_MB85RC_I2C object created");
 			Serial.print("I2C device address 0x");
@@ -71,11 +90,9 @@ FRAM_MB85RC_I2C::FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin)
 			Serial.println("...... ...... ......");
 		}
     #endif
-}
 
-/*========================================================================*/
-/*                           PUBLIC FUNCTIONS                             */
-/*========================================================================*/
+	return;
+}
 
 /**************************************************************************/
 /*!

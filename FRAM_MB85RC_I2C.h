@@ -9,6 +9,7 @@
 	v1.0.1 - Robustness enhancement
 	v1.0.2 - fix constructor, introducing byte move in memory
 	v1.0.3 - fix writeLong() function
+	v1.0.4 - fix constructor call error
 
     Driver for the MB85RC I2C FRAM from Fujitsu.
 	
@@ -80,6 +81,7 @@ class FRAM_MB85RC_I2C {
 	FRAM_MB85RC_I2C(uint8_t address, boolean wp);
 	FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin);
 	
+	void	begin(void);
 	byte	checkDevice(void);
 	byte	readBit(uint16_t framAddr, uint8_t bitNb, byte *bit);
 	byte	setOneBit(uint16_t framAddr, uint8_t bitNb);

@@ -9,6 +9,7 @@
     @section  HISTORY
 
     v1.0 - First release
+	v1.0.1 - fix constructor call error
 	
 */
 /**************************************************************************/
@@ -24,6 +25,8 @@ uint8_t readvalue = 0xFF;
 //random address to write from
 uint16_t writeaddress = 0x025;
 
+//Creating object for FRAM chip
+FRAM_MB85RC_I2C mymemory;
 
 void setup() {
 
@@ -32,9 +35,9 @@ void setup() {
 	Wire.begin();
 	
     Serial.println("Starting...");
+
 	
-	//Creating object for FRAM chip
-    FRAM_MB85RC_I2C mymemory;
+	mymeory.begin();
 
 
 	//write to FRAM chip
