@@ -37,7 +37,7 @@ void setup() {
     Serial.println("Starting...");
 
 	
-	mymeory.begin();
+	mymemory.begin();
 
 
 	//write to FRAM chip
@@ -54,7 +54,7 @@ void setup() {
 
 	//get one device ID
 	uint16_t densitycode;
-	resultd = mymemory.getOneDeviceID(3, &densitycode);
+	resultr = mymemory.getOneDeviceID(3, &densitycode);
 
 	Serial.print("DensityCode 0x");
 	Serial.println(densitycode, HEX);
