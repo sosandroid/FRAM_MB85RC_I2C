@@ -8,8 +8,9 @@
 
     @section  HISTORY
 
-    v1.0 - First release
+    v1.0.0 - First release
 	v1.0.1 - fix constructor call error
+	v1.0.2 - fix code mispelling
 	
 */
 /**************************************************************************/
