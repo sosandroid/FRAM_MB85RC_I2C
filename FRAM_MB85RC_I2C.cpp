@@ -13,6 +13,7 @@
 	v1.0.2 - fix constructor, introducing byte move in memory
 	v1.0.3 - fix writeLong() function
 	v1.0.4 - fix constructor call error
+	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
 */
 /**************************************************************************/
 
@@ -80,7 +81,7 @@ void FRAM_MB85RC_I2C::begin(void) {
 			else {
 				Serial.println("false");
 			}
-			if(deviceFound == 0) {
+			if(deviceFound == ERROR_0) {
 				Serial.println("Memory Chip connected");
 				FRAM_MB85RC_I2C::deviceIDs2Serial();
 			}
@@ -107,8 +108,7 @@ byte FRAM_MB85RC_I2C::checkDevice(void)
   /* Make sure we're actually connected */
   byte result = getDeviceIDs();
   
-  if ((result == 0) && (manufacturer = 0x00A) && (densitycode > 0x02) && (densitycode < 0x08) && (maxaddress != 0)) {
-		//densitycode 0x03 = 64K chip, densitycode 0x07 = 1M chip -- check datasheets & readme
+  if ((result == ERROR_0) && (manufacturer = 0x00A) && (densitycode < 0x08) && (maxaddress != 0)) {
 		_framInitialised = true;
   }
   else {
@@ -189,7 +189,7 @@ byte FRAM_MB85RC_I2C::readArray (uint16_t framAddr, byte items, uint8_t values[]
 {
 	byte result;
 	if (items == 0) {
-		result = 8; //number of bytes asked to read null
+		result = ERROR_8; //number of bytes asked to read null
 	}
 	else {
 		Wire.beginTransmission(i2c_addr);
@@ -268,7 +268,7 @@ byte FRAM_MB85RC_I2C::readBit(uint16_t framAddr, uint8_t bitNb, byte *bit)
 {
 	byte result;
 	if (bitNb > 7) {
-		result = 9;
+		result = ERROR_9;
 	}
 	else {
 		uint8_t buffer[1];
@@ -295,7 +295,7 @@ byte FRAM_MB85RC_I2C::setOneBit(uint16_t framAddr, uint8_t bitNb)
 {
 	byte result;
 	if (bitNb > 7)  {
-		result = 9;
+		result = ERROR_9;
 	}
 	else {
 		uint8_t buffer[1];
@@ -322,7 +322,7 @@ byte FRAM_MB85RC_I2C::clearOneBit(uint16_t framAddr, uint8_t bitNb)
 {
 	byte result;
 	if (bitNb > 7) {
-		result = 9;
+		result = ERROR_9;
 	}
 	else {
 		uint8_t buffer[1];
@@ -349,7 +349,7 @@ byte FRAM_MB85RC_I2C::toggleBit(uint16_t framAddr, uint8_t bitNb)
 {
 	byte result;
 	if (bitNb > 7) {
-		result = 9;
+		result = ERROR_9;
 	}
 	else {
 		uint8_t buffer[1];
@@ -468,23 +468,23 @@ byte FRAM_MB85RC_I2C::getOneDeviceID(uint8_t idType, uint16_t *id)
 	switch (idType) {
 		case manuf:
 			*id = manufacturer;
-			result = 0;
+			result = ERROR_0;
 			break;
 		case prod:
 			*id = productid;
-			result = 0;
+			result = ERROR_0;
 			break;
 		case densc:
 			*id = densitycode;
-			result = 0;
+			result = ERROR_0;
 			break;
 		case densi:
 			*id = density;
-			result = 0;
+			result = ERROR_0;
 			break;
 		default:
 			*id = 0;
-			result = 5;
+			result = ERROR_5;
 			break;
 	}
 	return result;
@@ -540,10 +540,10 @@ byte FRAM_MB85RC_I2C::enableWP(void) {
 	if (MB85RC_MANAGE_WP) {
 		digitalWrite(wpPin,HIGH);
 		wpStatus = true;
-		result = 0;
+		result = ERROR_0;
 	}
 	else {
-		result = 10;
+		result = ERROR_10;
 	}
 	return result;
 }
@@ -566,10 +566,10 @@ byte FRAM_MB85RC_I2C::disableWP() {
 	if (MB85RC_MANAGE_WP) {
 		digitalWrite(wpPin,LOW);
 		wpStatus = false;
-		result = 0;
+		result = ERROR_0;
 	}
 	else {
-		result = 10;
+		result = ERROR_10;
 	}
 	return result;
 }
@@ -645,13 +645,9 @@ byte FRAM_MB85RC_I2C::getDeviceIDs(void)
 {
 	uint8_t localbuffer[3] = { 0, 0, 0 };
 	uint8_t result;
-	const uint16_t dens64 = 0x03;
-	const uint16_t dens128 = 0x04;
-	const uint16_t dens256 = 0x05;
-	const uint16_t dens512 = 0x06;
-	const uint16_t dens1024 = 0x07;
 	
-	/* Get device IDs sequence                                                                                                  */
+	/* Get device IDs sequence 	*/
+	/* 1/ Send 0xF8 to the I2C bus as a write instruction. bit 0: 0 => 0xF8 >> 1 */
 	/* Send 0xF8 to 12C bus. Bit shift to right as beginTransmission() requires a 7bit. beginTransmission() 0 for write => 0xF8 */
 	/* Send device address as 8 bits. Bit shift to left as we are using a simple write()                                        */
 	/* Send 0xF9 to I2C bus. By requesting 3 bytes to read, requestFrom() add a 1 bit at the end of a 7 bits address => 0xF9    */
@@ -670,34 +666,45 @@ byte FRAM_MB85RC_I2C::getDeviceIDs(void)
 	manufacturer = (localbuffer[0] << 4) + (localbuffer[1] >> 4);
 	densitycode = (uint16_t)(localbuffer[1] & 0x0F);
 	productid = ((localbuffer[1] & 0x0F) << 8) + localbuffer[2];
+
 	
 	switch (densitycode) {
-		case dens64:
+		case DENSITY_04:
+			density = 4;
+			maxaddress = MAXADDRESS_04;
+			break;
+		case DENSITY_16:
+			density = 16;
+			maxaddress = MAXADDRESS_16;
+			break;
+		case DENSITY_64:
 			density = 64;
-			maxaddress = 8192;
+			maxaddress = MAXADDRESS_64;
 			break;
-		case dens128:
+		case DENSITY_128:
 			density = 128;
-			maxaddress = 16384;
+			maxaddress = MAXADDRESS_128;
 			break;
-		case dens256:
+		case DENSITY_256:
 			density = 256;
-			maxaddress = 32768;
+			maxaddress = MAXADDRESS_256;
 			break;
-		case dens512:
+		case DENSITY_512:
 			density = 512;
-			maxaddress = 65536;
+			maxaddress = MAXADDRESS_512;
 			break;
-		case dens1024:
+		case DENSITY_1024:
 			density = 1024;
-			maxaddress = 65536; /* should be 2 times greater but we are considering the 1M device as 2 physical 512K devices. */
+			maxaddress = MAXADDRESS_1024; /* should be 2 times greater but we are considering the 1M device as 2 physical 512K devices. */
 			break;
 		default:
 			density = 0; /* means error */
 			maxaddress = 0; /* means error */
-			if (result == 0) result = 7; /*device unidentified, comminication ok*/
+			if (result == 0) result = ERROR_7; /*device unidentified, comminication ok*/
 			break;
 	}
+	
+
   return result;
 }
 
@@ -714,9 +721,10 @@ byte FRAM_MB85RC_I2C::getDeviceIDs(void)
 */
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::deviceIDs2Serial(void) {
-    byte result = 4;
+    byte result = ERROR_4;
 	#ifdef SERIAL_DEBUG
 		if (Serial){
+			Serial.println("FRAM Device IDs");
 			Serial.print("Manufacturer 0x"); Serial.println(manufacturer, HEX);
 			Serial.print("ProductID 0x"); Serial.println(productid, HEX);
 			Serial.print("Density code 0x"); Serial.println(densitycode, HEX);
@@ -724,7 +732,7 @@ byte FRAM_MB85RC_I2C::deviceIDs2Serial(void) {
 			if ((manufacturer == 0x00A) && (density != 0))  Serial.println("Device identfied");
 			if ((manufacturer == 0x00A) && (density = 0))  Serial.println("Device NOT identfied");
 			Serial.println("...... ...... ......");
-			result = 0;
+			result = ERROR_0;
 		}
     #endif
 	return result;
@@ -759,7 +767,7 @@ byte FRAM_MB85RC_I2C::initWP(boolean wp) {
 	}
 	else {
 		wpStatus = false;
-		result = 0;
+		result = ERROR_0;
 	}
 	return result;
 }

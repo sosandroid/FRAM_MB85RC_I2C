@@ -10,6 +10,7 @@
 	v1.0.2 - fix constructor, introducing byte move in memory
 	v1.0.3 - fix writeLong() function
 	v1.0.4 - fix constructor call error
+	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
 
     Driver for the MB85RC I2C FRAM from Fujitsu.
 	
@@ -57,6 +58,25 @@
 // Enabling debug I2C - comment to disable / normal operations
 #define SERIAL_DEBUG
 
+// IDs
+// The density gives the memory's adressing scheme
+#define MANUFACT_ID 0x00A
+#define DENSITY_04 0x00 // To be double checked
+#define DENSITY_16 0x01 // To be confirmed
+#define DENSITY_64 0x02 // To be confirmed
+#define DENSITY_128 0x04 //Cypress has 0x01 for CY15B serie
+#define DENSITY_256 0x05 //Cypress has 0x02 for CY15B serie
+#define DENSITY_512 0x06
+#define DENSITY_1024 0x07
+
+#define MAXADDRESS_04 512
+#define MAXADDRESS_16 2048
+#define MAXADDRESS_64 8192
+#define MAXADDRESS_128 16384
+#define MAXADDRESS_256 32768
+#define MAXADDRESS_512 65536
+#define MAXADDRESS_1024 65536 // 1M devices are in fact managed as 2 512 devices from lib point of view > create 2 instances of the object with each a differnt address
+
 // Adresses
 #define MB85RC_ADDRESS_A000   0x50
 #define MB85RC_ADDRESS_A001   0x51
@@ -73,6 +93,19 @@
 #define MB85RC_MANAGE_WP false //false if WP pin remains not connected
 #define MB85RC_DEFAULT_WP_PIN	13 //write protection pin - active high, write enabled when low
 #define MB85RC_DEFAULT_WP_STATUS  false //false means protection is off - write is enabled
+
+// Error management
+#define ERROR_0 0 // Success    
+#define ERROR_1 1 // Data too long to fit the transmission buffer on Arduino
+#define ERROR_2 2 // received NACK on transmit of address
+#define ERROR_3 3 // received NACK on transmit of data
+#define ERROR_4 4 // Serial seems not available
+#define ERROR_5 5 // Not referenced device ID
+#define ERROR_6 6 // Unused
+#define ERROR_7 6 // Fram chip unidentified
+#define ERROR_8 8 // Number of bytes asked to read null
+#define ERROR_9 9 // Bit position out of range
+#define ERROR_10 10 // Not permitted opération
 
 
 class FRAM_MB85RC_I2C {
