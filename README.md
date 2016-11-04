@@ -36,7 +36,7 @@ Supports 64K, 128K, 256K & 512K devices. Works for 1M devices when considering e
 
 ## Devices ##
 
-It seems that *Cypress FM24* and *CY15B* series are supported by this library. However, his has not been tested. Please leave feedback if you perform such a test. [More info](http://www.cypress.com/products/f-ram-serial).
+It seems that __Cypress__ __FM24__ and __CY15B__ series are supported by this library according to the datasheets. However, his has not been tested. Please leave feedback if you perform such a test. [More info](http://www.cypress.com/products/f-ram-serial).
 
 | Devices | Information | Supported |
 | ------- | ----------- | --------- |
@@ -56,15 +56,17 @@ It seems that *Cypress FM24* and *CY15B* series are supported by this library. H
 | | Manufacturer: 0x00A, ProductID: 0x758, DensityCode: 0x07, Maxaddress: 131072, Density: 1024, R/W cycles: 10^13 | Yes |
 
 Note 1 : MB85RC04V has a 9 bits adressing memory map. The 9th bit is set in the device address bytes
+
 Note 2 : MB85RC16V has a 11 bits adressing memory map. The 3 MSB are set in the device address bytes in place of A2~A0
 
 
 ## Adresses ##
 Devices address : b1010 + A2 + A1 + A0.
 
-All devices are pulling down internaly A2, A1 & A0. Default address is b1010000 (0x50) - exception 1M chips which seems to be a double 512K devices in a single package
+All devices are pulling down internaly A2, A1 & A0. Default address is b1010000 (0x50) - exception 1M chips which seems to be a double 512K devices in a single package. Please use 2 objects instances to deal with them.
 
 MB85RC16V devices does not have A2, A1 nor A0 support. This is used for memory addressing
+
 MB85RC04V devices have only A2 & A1 support. A0 is used for memory addressing.
 
 ## Errors ##
@@ -82,7 +84,7 @@ The error management is eased by returning a byte value for almost each method. 
 
 ## Testing ##
 - Tested only against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895
-- Tested on Arduino Mega with Arduino IDE 1.0.5
+- Tested on Arduino Mega with Arduino IDE 1.0.5 & 1.6.11
 - Please comment about other devices (Memory & Arduino Boards)
 - When trying to get the device IDs of MB85RC16V, @porcao got 0xFFF as manufacturer ID, OxFFF as product ID and 0xF as Density code. Issue seems comming from the mix of chip address & memory address when sending commande according to Wire lib.
 
