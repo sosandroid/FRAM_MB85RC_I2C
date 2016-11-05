@@ -53,11 +53,13 @@ It seems that __Cypress__ __FM24__ and __CY15B__ series are supported by this li
 | MB85RC512T | [datasheet](http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC512T-DS501-00028-0v01-E.pdf) |
 | | Manufacturer: 0x00A, ProductID: 0x658, DensityCode: 0x06, Maxaddress: 65536, Address Length: 16bits, Density: 512, R/W cycles: 10^13 | Yes |
 | MB85RC1MT | [datasheet](http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC1MT-DS501-00027-0v01-E.pdf) |
-| | Manufacturer: 0x00A, ProductID: 0x758, DensityCode: 0x07, Maxaddress: 131072, Density: 1024, R/W cycles: 10^13 | Yes |
+| | Manufacturer: 0x00A, ProductID: 0x758, DensityCode: 0x07, Maxaddress: 131072, Address Length: 17bits, Density: 1024, R/W cycles: 10^13 | Yes (3) |
 
 Note 1 : MB85RC04V has a 9 bits adressing memory map. The 9th bit is set in the device address bytes
 
 Note 2 : MB85RC16V has a 11 bits adressing memory map. The 3 MSB are set in the device address bytes in place of A2~A0
+
+Note 3 : MB85RC1MT has a 17 bits adressing memory map. To manage this device, you need to consider it as 2 512K devices with 2 distincts adresses : 1010+A2+A1+0 and 1010+A2+A1+1
 
 
 ## Adresses ##
