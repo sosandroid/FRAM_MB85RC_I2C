@@ -1,20 +1,11 @@
 Arduino library for I2C FRAM - Fujitsu MB85RC & Cypress FM24, CY15B
 ==============
 
-    v1.0 - First release
-	v1.0.1 - Robustness enhancement
-	v1.0.2 - fix constructor, introducing byte move in memory
-	v1.0.3 - fix writeLong() function
-	v1.0.4 - fix constructor call error
-	v1.0.4.1 - Add example to help @porcao
-	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
-	v1.1.0b - Adding support for devices without device IDs + 4K & 16 K devices support
-
-
 I2C Ferroelectric Random Access Memory (FRAM). Read/write endurance for each memory slot : 10^12 cycles and more.
 9~16 bit adresses, 8 bits data slots.
 
 Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when considering each device as 2 differents 512K devices
+
 
 ## Features ##
 - Device settings detection (if Device ID feature is available)
@@ -33,6 +24,19 @@ Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when cons
 - Manage write protect pin
 - Erase memory (set all chip to 0x00)
 - Debug mode manageable from header file
+
+## Revision History ##
+
+
+    v1.0 - First release
+	v1.0.1 - Robustness enhancement
+	v1.0.2 - fix constructor, introducing byte move in memory
+	v1.0.3 - fix writeLong() function
+	v1.0.4 - fix constructor call error
+	v1.0.4.1 - Add example to help @porcao
+	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
+	v1.1.0b - Adding support for devices without device IDs + 4K & 16 K devices support
+
 
 
 ## Devices ##
