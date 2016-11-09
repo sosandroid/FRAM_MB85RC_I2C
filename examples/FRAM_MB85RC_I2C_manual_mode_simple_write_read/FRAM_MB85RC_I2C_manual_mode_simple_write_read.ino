@@ -23,9 +23,9 @@ uint8_t readvalue = 0xFF; // at the end, readvalue should be equal to writevalue
 //random address to write from
 uint16_t writeaddress = 0x025;
 
-//Example for mamual mode and a 16K chip --- 16K devices does not have A2, A1 nor A0 support. This is used for memory addressing `i2c_addr = 0b1010000`
+//Example for mamual mode and a 16K chip --- 16K devices does not have A2, A1 nor A0 support. Device address `i2c_addr = 0b1010000` where 3LSB stands for 3 MSB of the memory address
 uint8_t chipaddress = 0x50;
-boolean wp = true;
+boolean wp = false; //Allows memory write
 int pin = 13;
 uint16_t chipDensity = 16;
 
