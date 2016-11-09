@@ -1,4 +1,4 @@
-Arduino library for I2C FRAM MB85RC series from Fujitsu & some of the Cypress FM24, CY15B
+Arduino library for I2C FRAM - Fujitsu MB85RC & Cypress FM24, CY15B
 ==============
 
     v1.0 - First release
@@ -8,16 +8,17 @@ Arduino library for I2C FRAM MB85RC series from Fujitsu & some of the Cypress FM
 	v1.0.4 - fix constructor call error
 	v1.0.4.1 - Add example to help @porcao
 	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
+	v1.1.0b - adding support for devices without device IDs + 4K & 16 K devices support
 
 
-MB85RC from Fujitsu is a I2C Ferroelectric Random Access Memory (FRAM). Read/write endurance for each memory slot : 10^12 cycles.
-16 bit adresses, 8 bits data slots.
+I2C Ferroelectric Random Access Memory (FRAM). Read/write endurance for each memory slot : 10^12 cycles and more.
+9~16 bit adresses, 8 bits data slots.
 
-Supports 64K, 128K, 256K & 512K devices. Works for 1M devices when considering each device as 2 differents 512K devices (see datasheet: 17 bits addresses of which MSB is replacing A0 device address bit).
-
-[MB85RCxxxx](http://www.fujitsu.com/us/products/devices/semiconductor/memory/fram/lineup/index.html) Fujitsu's page
+Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when considering each device as 2 differents 512K devices
 
 ## Features ##
+- Device settings detection (if Device ID feature is available)
+- Device manual setting
 - Manage single bit (read, set, clear, toggle) from a byte
 - Write one 8-bits, 16-bits or 32-bits value
 - Write one array of bytes 
@@ -36,30 +37,42 @@ Supports 64K, 128K, 256K & 512K devices. Works for 1M devices when considering e
 
 ## Devices ##
 
-It seems that __Cypress__ __FM24__ and __CY15B__ series are supported by this library according to the datasheets. However, his has not been tested. Please leave feedback if you perform such a test. [More info](http://www.cypress.com/products/f-ram-serial).
+**Fujitsu FRAM** - manufacturer code 0x00A - [Fujitsu page](http://www.fujitsu.com/us/products/devices/semiconductor/memory/fram/lineup/index.html)
 
-| Devices | Information | Supported |
-| ------- | ----------- | --------- |
-| MB85RC04V | [datasheet](http://edevice.fujitsu.com/fj/DATASHEET/e-ds/MB85RC04V-DS501-00016-4v0-E.pdf) |
-| | Manufacturer: 0x00A, ProductID: 0x010, DensityCode: 0x00, Maxaddress: 512, Address Length: 9bits, Density: 4, R/W cycles: 10^12 | Not yet (1) |
-| MB85RC16V | [datasheet](http://edevice.fujitsu.com/fj/DATASHEET/e-ds/MB85RC16V-DS501-00010-8v0-E.pdf) |
-| | Manufacturer: 0x00A, ProductID: 0x???, DensityCode: 0x??, Maxaddress: 2048, Address Length: 11bits, Density: 16, R/W cycles: 10^12 | Not yet (2) |
-| MB85RC64V | [datasheet](http://edevice.fujitsu.com/fj/DATASHEET/e-ds/MB85RC64V-DS501-00013-7v0-E.pdf) |
-| | Manufacturer: 0x00A, ProductID: 0x???, DensityCode: 0x03, Maxaddress: 8192, Address Length: 13bits, Density: 64, R/W cycles: 10^12 | Yes |
-| MB85RC128A | [datasheet](http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/e513110.pdf) |
-| | Manufacturer: 0x00A, ProductID: 0x???, DensityCode: 0x04, Maxaddress: 16384, Address Length: 14bits, Density: 128, R/W cycles: 10^12 | Yes |
-| MB85RC256V | [datasheet](http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC256V-DS501-00017-3v0-E.pdf) |
-| | Manufacturer: 0x00A, ProductID: 0x510, DensityCode: 0x05, Maxaddress: 32768, Address Length: 15bits, Density: 256, R/W cycles: 10^12 | Yes |
-| MB85RC512T | [datasheet](http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC512T-DS501-00028-0v01-E.pdf) |
-| | Manufacturer: 0x00A, ProductID: 0x658, DensityCode: 0x06, Maxaddress: 65536, Address Length: 16bits, Density: 512, R/W cycles: 10^13 | Yes |
-| MB85RC1MT | [datasheet](http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC1MT-DS501-00027-0v01-E.pdf) |
-| | Manufacturer: 0x00A, ProductID: 0x758, DensityCode: 0x07, Maxaddress: 131072, Address Length: 17bits, Density: 1024, R/W cycles: 10^13 | Yes (3) |
+|  Model | Density (kB) | Device addressing | Device ID feature | Density code | Memory addressing | Tested |
+|  ------ | :------: | :------: | :------: | :------: | :------: | :------: |
+|  **MB85RC04V** | 4 | 6 bits | Yes | 0x00 | 9 bits (1) | No |
+|  **MB85RC16V** | 16 | 4 bits | No | - | 11 bits (2) | No |
+|  **MB85RC16** | 16 | 4 bits | No | - | 11 bits (2) | No |
+|  **MB85RC64V** | 64 | 7 bits | No | - | 13 bits | No |
+|  **MB85RC64A** | 64 | 7 bits | No | - | 13 bits | No |
+|  **MB85RC64TA** | 64 | 7 bits | Yes | 0x03 | 13 bits | No |
+|  **MB85RC128A** | 128 | 7 bits | No | - | 14 bits | No |
+|  **MB85RC256V** | 256 | 7 bits | Yes | 0x05 | 15 bits | Yes |
+|  **MB85RC512T** | 512 | 7 bits | Yes | 0x06 | 16 bits | No |
+|  **MB85RC1MT** | 1024 | 7 bits | Yes | 0x07 | 17 bits (3) | No |
 
-Note 1 : MB85RC04V has a 9 bits adressing memory map. The 9th bit is set in the device address bytes
+**Cypress FRAM** - manufacturer code 0x004 - [Cypress page](http://www.cypress.com/products/f-ram-serial)
 
-Note 2 : MB85RC16V has a 11 bits adressing memory map. The 3 MSB are set in the device address bytes in place of A2~A0
+|  Model | Density (kB) | Device addressing | Device ID feature | Density code | Memory addressing | Tested |
+|  ------ | :------: | :------: | :------: | :------: | :------: | :------: |
+|  **FM24CL04B** | 4 | 6 bits | No | - | 9 bits (1) | No |
+|  **FM24C04B** | 4 | 6 bits | No | - | 9 bits (1) | No |
+|  **FM24C16B** | 16 | 4 bits | No | - | 11 bits (2) | No |
+|  **FM24C64B** | 64 | 7 bits | No | - | 13 bits | No |
+|  **FM24CL64B** | 64 | 7 bits | No | - | 13 bits | No |
+|  **CY15B128J** | 128 | 7 bits | Yes | 0x01 | 14 bits | No |
+|  **FM24W256** | 256 | 7 bits | No | - | 15 bits | No |
+|  **CY15B256J** | 256 | 7 bits | Yes | 0x02 | 15 bits | No |
+|  **FM24V05** | 512 | 7 bits | Yes | 0x03 | 16 bits | No |
+|  **FM24V10** | 1024 | 7 bits | Yes | 0x04 | 17 bits (3) | No |	
 
-Note 3 : MB85RC1MT has a 17 bits adressing memory map. To manage this device, you need to consider it as 2 512K devices with 2 distincts adresses : 1010+A2+A1+0 and 1010+A2+A1+1
+
+Note 1 : 4K devices have a 9 bits adressing memory map. The 9th bit is set in the device address bytes
+
+Note 2 : 16K devices a 11 bits adressing memory map. The 3 MSB are set in the device address bytes in place of A2~A0
+
+Note 3 : 1M a 17 bits adressing memory map. To manage this device, you need to consider it as 2 512K devices with 2 distincts adresses : 1010+A2+A1+0 and 1010+A2+A1+1. The library is set that way.
 
 
 ## Adresses ##
@@ -67,9 +80,11 @@ Devices address : b1010 + A2 + A1 + A0.
 
 All devices are pulling down internaly A2, A1 & A0. Default address is b1010000 (0x50) - exception 1M chips which seems to be a double 512K devices in a single package. Please use 2 objects instances to deal with them.
 
-MB85RC16V devices does not have A2, A1 nor A0 support. This is used for memory addressing
+4K devices have only A2 & A1 support. A0 is used for memory addressing. `i2c_addr = 0b1010xx0`
 
-MB85RC04V devices have only A2 & A1 support. A0 is used for memory addressing.
+16K devices does not have A2, A1 nor A0 support. This is used for memory addressing `i2c_addr = 0b1010000`
+
+
 
 ## Errors ##
 The error management is eased by returning a byte value for almost each method. Most of the time, this is the status code from Wire.endTransmission() function.
@@ -85,14 +100,15 @@ The error management is eased by returning a byte value for almost each method. 
 - 10: not permitted operation
 
 ## Testing ##
-- Tested only against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895
+- Tested against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895
 - Tested on Arduino Mega with Arduino IDE 1.0.5 & 1.6.11
+
 - Please comment about other devices (Memory & Arduino Boards)
-- When trying to get the device IDs of MB85RC16V, @porcao got 0xFFF as manufacturer ID, OxFFF as product ID and 0xF as Density code. Issue seems comming from the mix of chip address & memory address when sending commande according to Wire lib.
 
 ## To do ##
+- testing all devices
 - Create a more robust error management (function to handle that with higher layer)
 - Rework the debug mode
 
 ## Credits ##
-- [Kevin Townsend](https://github.com/microbuilder) who wrote the [Adafruit Lib](https://github.com/adafruit/Adafruit_FRAM_I2C)
+- [Kevin Townsend](https://github.com/microbuilder) who wrote the very first [Adafruit Lib](https://github.com/adafruit/Adafruit_FRAM_I2C) which this one is forked from

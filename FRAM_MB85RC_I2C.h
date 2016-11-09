@@ -11,6 +11,7 @@
 	v1.0.3 - fix writeLong() function
 	v1.0.4 - fix constructor call error
 	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
+	v1.1.0b - adding support for devices without device IDs + 4K & 16 K devices support
 
     Driver for the MB85RC I2C FRAM from Fujitsu.
 	
@@ -59,15 +60,25 @@
 #define SERIAL_DEBUG
 
 // IDs
-// The density gives the memory's adressing scheme
-#define MANUFACT_ID 0x00A
-#define DENSITY_04 0x00 // To be double checked
-#define DENSITY_16 0x01 // To be confirmed
-#define DENSITY_64 0x02 // To be confirmed
-#define DENSITY_128 0x04 //Cypress has 0x01 for CY15B serie
-#define DENSITY_256 0x05 //Cypress has 0x02 for CY15B serie
-#define DENSITY_512 0x06
-#define DENSITY_1024 0x07
+//Manufacturers codes
+#define FUJITSU_MANUFACT_ID 0x00A
+#define CYPRESS_MANUFACT_ID 0x004
+#define MANUALMODE_MANUFACT_ID 0xF00
+
+// The density codes gives the memory's adressing scheme
+#define DENSITY_MB85RC04V 0x00		// 4K
+#define DENSITY_MB85RC64TA 0x03		// 64K
+#define DENSITY_MB85RC256V 0x05		// 512K
+#define DENSITY_MB85RC512T 0x06		// 512K
+#define DENSITY_MB85RC1MT 0x07		// 1M
+
+#define DENSITY_CY15B128J 0x01		// 128K - FM24V01A also
+#define DENSITY_CY15B256J 0x02		// 256K - FM24V02A also
+#define DENSITY_FM24V05 0x03		// 512K
+#define DENSITY_FM24V10 0x04		// 1024K
+
+// Devices MB85RC16, MB85RC16V, MB85RC64A, MB85RC64V and MB85RC128A do not support Device ID reading
+// 			FM24W256,FM24CL64B, FM24C64B, FM24C16B, FM24C04B, FM24CL04B
 
 #define MAXADDRESS_04 512
 #define MAXADDRESS_16 2048
@@ -87,12 +98,16 @@
 #define MB85RC_ADDRESS_A110   0x56
 #define MB85RC_ADDRESS_A111   0x57
 #define MB85RC_DEFAULT_ADDRESS   MB85RC_ADDRESS_A000
-#define MB85RC_SLAVE_ID       0xF8
+
+//Special commands
+#define MASTER_CODE	0xF8
+#define SLEEP_MODE	0x86 //Cypress codes, not used here	
+#define HIGH_SPEED	0x08 //Cypress codes, not used here
 
 // Managing Write protect pin
-#define MB85RC_MANAGE_WP false //false if WP pin remains not connected
-#define MB85RC_DEFAULT_WP_PIN	13 //write protection pin - active high, write enabled when low
-#define MB85RC_DEFAULT_WP_STATUS  false //false means protection is off - write is enabled
+#define MANAGE_WP false //false if WP pin remains not connected
+#define DEFAULT_WP_PIN	13 //write protection pin - active high, write enabled when low
+#define DEFAULT_WP_STATUS  false //false means protection is off - write is enabled
 
 // Error management
 #define ERROR_0 0 // Success    
@@ -113,6 +128,7 @@ class FRAM_MB85RC_I2C {
 	FRAM_MB85RC_I2C(void);
 	FRAM_MB85RC_I2C(uint8_t address, boolean wp);
 	FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin);
+	FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin, uint16_t chipDensity);
 	
 	void	begin(void);
 	byte	checkDevice(void);
@@ -139,6 +155,7 @@ class FRAM_MB85RC_I2C {
  private:
 	uint8_t	i2c_addr;
 	boolean	_framInitialised;
+	boolean	_manualMode;
 	uint16_t	manufacturer;
 	uint16_t	productid; 
 	uint16_t	densitycode;
@@ -149,8 +166,10 @@ class FRAM_MB85RC_I2C {
 	boolean	wpStatus;
 
 	byte	getDeviceIDs(void);	
+	byte	setDeviceIDs(void);
 	byte	initWP(boolean wp);
 	byte	deviceIDs2Serial(void);
+	void	I2CAddressAdapt(uint16_t framAddr);
 };
 
 #endif
