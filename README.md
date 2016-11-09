@@ -8,7 +8,7 @@ Arduino library for I2C FRAM - Fujitsu MB85RC & Cypress FM24, CY15B
 	v1.0.4 - fix constructor call error
 	v1.0.4.1 - Add example to help @porcao
 	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
-	v1.1.0b - adding support for devices without device IDs + 4K & 16 K devices support
+	v1.1.0b - Adding support for devices without device IDs + 4K & 16 K devices support
 
 
 I2C Ferroelectric Random Access Memory (FRAM). Read/write endurance for each memory slot : 10^12 cycles and more.
@@ -50,7 +50,7 @@ Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when cons
 |  **MB85RC128A** | 128 | 7 bits | No | - | 14 bits | No |
 |  **MB85RC256V** | 256 | 7 bits | Yes | 0x05 | 15 bits | Yes |
 |  **MB85RC512T** | 512 | 7 bits | Yes | 0x06 | 16 bits | No |
-|  **MB85RC1MT** | 1024 | 7 bits | Yes | 0x07 | 17 bits (3) | No |
+|  **MB85RC1MT** | 1024 | 6 bits | Yes | 0x07 | 17 bits (3) | No |
 
 **Cypress FRAM** - manufacturer code 0x004 - [Cypress page](http://www.cypress.com/products/f-ram-serial)
 
@@ -65,7 +65,7 @@ Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when cons
 |  **FM24W256** | 256 | 7 bits | No | - | 15 bits | No |
 |  **CY15B256J** | 256 | 7 bits | Yes | 0x02 | 15 bits | No |
 |  **FM24V05** | 512 | 7 bits | Yes | 0x03 | 16 bits | No |
-|  **FM24V10** | 1024 | 7 bits | Yes | 0x04 | 17 bits (3) | No |	
+|  **FM24V10** | 1024 | 6 bits | Yes | 0x04 | 17 bits (3) | No |	
 
 
 Note 1 : 4K devices have a 9 bits adressing memory map. The 9th bit is set in the device address bytes
@@ -111,4 +111,4 @@ The error management is eased by returning a byte value for almost each method. 
 - Rework the debug mode
 
 ## Credits ##
-- [Kevin Townsend](https://github.com/microbuilder) who wrote the very first [Adafruit Lib](https://github.com/adafruit/Adafruit_FRAM_I2C) which this one is forked from
+- [Kevin Townsend](https://github.com/microbuilder) who wrote the very first [Adafruit Lib](https://github.com/adafruit/Adafruit_FRAM_I2C) of which this one is forked from
