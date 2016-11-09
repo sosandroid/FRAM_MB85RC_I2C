@@ -64,6 +64,8 @@
 #define FUJITSU_MANUFACT_ID 0x00A
 #define CYPRESS_MANUFACT_ID 0x004
 #define MANUALMODE_MANUFACT_ID 0xF00
+#define MANUALMODE_PRODUCT_ID 0xF00
+#define MANUALMODE_DENSITY_ID 0xF00
 
 // The density codes gives the memory's adressing scheme
 #define DENSITY_MB85RC04V 0x00		// 4K

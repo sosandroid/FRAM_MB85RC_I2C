@@ -793,8 +793,9 @@ byte FRAM_MB85RC_I2C::setDeviceIDs(void)
 				maxaddress = 0; /* means error */
 				break;
 		}
-		densitycode = 0xF00;
-		productid = 0xF00;
+		densitycode = MANUALMODE_DENSITY_ID;
+		productid = MANUALMODE_PRODUCT_ID;
+		manufacturer = MANUALMODE_MANUFACT_ID;
 		if (maxaddress !=0) { 
 			return ERROR_0;
 		}
