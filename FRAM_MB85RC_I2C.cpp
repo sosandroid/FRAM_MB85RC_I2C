@@ -906,8 +906,8 @@ void FRAM_MB85RC_I2C::I2CAddressAdapt(uint16_t framAddr) {
 	}
 	
 	#ifdef SERIAL_DEBUG
-		Serial.print("i2c_addr 0x");
-		Serial.println(i2c_addr, HEX);
+		Serial.print("Calculated addr 0x");
+		Serial.println(chipaddress, HEX);
 	#endif
 	
 	if (density < 64) {
@@ -915,7 +915,7 @@ void FRAM_MB85RC_I2C::I2CAddressAdapt(uint16_t framAddr) {
 		Wire.write(framAddr & 0xFF);
 	}
 	else {
-		Wire.beginTransmission(i2c_addr);
+		Wire.beginTransmission(chipaddress);
 		Wire.write(framAddr >> 8);
 		Wire.write(framAddr & 0xFF);	
 	}
