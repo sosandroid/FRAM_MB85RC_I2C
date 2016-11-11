@@ -73,10 +73,10 @@ void setup() {
 	resultr = mymemory.readWord(writeaddress2, &readvalue2);
 	
 	Serial.print("Written value 0x");
-	Serial.println(writevalue2, HEX); //Should be writevalue +1
+	Serial.println(writevalue2, HEX);
 	
 	Serial.print("Read value 0x");
-	Serial.println(readvalue2, HEX);	//Should be writevalue +1
+	Serial.println(readvalue2, HEX);
 	
 	if (writevalue2 == readvalue2) {
 		Serial.println("Write word test : OK");
