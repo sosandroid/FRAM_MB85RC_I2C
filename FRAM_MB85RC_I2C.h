@@ -123,6 +123,7 @@
 #define ERROR_8 8 // Number of bytes asked to read null
 #define ERROR_9 9 // Bit position out of range
 #define ERROR_10 10 // Not permitted opération
+#define ERROR_11 11 // Memory address out of range
 
 
 class FRAM_MB85RC_I2C {

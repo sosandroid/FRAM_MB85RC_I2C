@@ -36,6 +36,7 @@ Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when cons
 	v1.0.4.1 - Add example to help @porcao
 	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
 	v1.1.0b - Adding support for devices without device IDs + 4K & 16 K devices support
+	v1.1.0b1 - Fixing checkDevice() + end of range memory map check + better manual mode example
 
 
 
@@ -101,7 +102,8 @@ The error management is eased by returning a byte value for almost each method. 
 - 7: Fram chip unidentified
 - 8: number of bytes asked to read null
 - 9: bit position out of range
-- 10: not permitted operation
+- 10: Not permitted operation
+- 11: Out of memory range operation
 
 ## Testing ##
 - Tested against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895

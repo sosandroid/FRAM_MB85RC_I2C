@@ -15,6 +15,7 @@
 	v1.0.4 - fix constructor call error
 	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
 	v1.1.0b - adding support for devices without device IDs + 4K & 16 K devices support
+	v1.1.0b1 - Fixing checkDevice() + end of range memory map check
 */
 /**************************************************************************/
 
@@ -131,7 +132,7 @@ byte FRAM_MB85RC_I2C::checkDevice(void)
 	}
   
 	// 
-	if ((result == ERROR_0) && ((manufacturer = FUJITSU_MANUFACT_ID) || (manufacturer = CYPRESS_MANUFACT_ID) || (manufacturer = MANUALMODE_MANUFACT_ID)) && (densitycode < 0x08) && (maxaddress != 0)) {
+	if ((result == ERROR_0) && ((manufacturer == FUJITSU_MANUFACT_ID) || (manufacturer == CYPRESS_MANUFACT_ID) || (manufacturer == MANUALMODE_MANUFACT_ID)) && (maxaddress != 0)) {
 		_framInitialised = true;
 	}
 	else {
@@ -160,6 +161,8 @@ byte FRAM_MB85RC_I2C::checkDevice(void)
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::writeArray (uint16_t framAddr, byte items, uint8_t values[])
 {
+	if ((framAddr >= maxaddress) || ((framAddr + (uint16_t) items - 1) >= maxaddress)) return ERROR_11;
+	
 	
 	FRAM_MB85RC_I2C::I2CAddressAdapt(framAddr);
 	for (byte i=0; i < items ; i++) {
@@ -209,6 +212,8 @@ byte FRAM_MB85RC_I2C::writeByte (uint16_t framAddr, uint8_t value)
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::readArray (uint16_t framAddr, byte items, uint8_t values[])
 {
+	if ((framAddr >= maxaddress) || ((framAddr + (uint16_t) items - 1) >= maxaddress)) return ERROR_11;
+	
 	byte result;
 	if (items == 0) {
 		result = ERROR_8; //number of bytes asked to read null
@@ -672,7 +677,8 @@ byte FRAM_MB85RC_I2C::getDeviceIDs(void)
 	/* Send device address as 8 bits. Bit shift to left as we are using a simple write()                                        */
 	/* Send 0xF9 to I2C bus. By requesting 3 bytes to read, requestFrom() add a 1 bit at the end of a 7 bits address => 0xF9    */
 	/* See p.10 of http://www.fujitsu.com/downloads/MICRO/fsa/pdf/products/memory/fram/MB85RC-DS501-00017-3v0-E.pdf             */
-	/*                                                                                                                          */
+	
+	
 	Wire.beginTransmission(MASTER_CODE >> 1);
 	Wire.write((byte)(i2c_addr << 1));
 	result = Wire.endTransmission(false);
@@ -827,8 +833,8 @@ byte FRAM_MB85RC_I2C::deviceIDs2Serial(void) {
 			Serial.print("ProductID 0x"); Serial.println(productid, HEX);
 			Serial.print("Density code 0x"); Serial.println(densitycode, HEX);
 			Serial.print("Density "); Serial.print(density, DEC); Serial.println("K");
-			if ((manufacturer != MANUALMODE_MANUFACT_ID) && (density != 0))  Serial.println("Device identfied automatically");
-			if ((manufacturer == MANUALMODE_MANUFACT_ID) && (density = 0))  Serial.println("Device properties set");
+			if ((manufacturer != MANUALMODE_MANUFACT_ID) && (density > 0))  Serial.println("Device identfied automatically");
+			if ((manufacturer == MANUALMODE_MANUFACT_ID) && (density > 0))  Serial.println("Device properties set");
 			Serial.println("...... ...... ......");
 			result = ERROR_0;
 		}
@@ -898,6 +904,11 @@ void FRAM_MB85RC_I2C::I2CAddressAdapt(uint16_t framAddr) {
 			chipaddress = i2c_addr;
 			break;
 	}
+	
+	#ifdef SERIAL_DEBUG
+		Serial.print("i2c_addr 0x");
+		Serial.println(i2c_addr, HEX);
+	#endif
 	
 	if (density < 64) {
 		Wire.beginTransmission(chipaddress);
