@@ -50,6 +50,8 @@ void setup() {
 	mymemory.begin();
 
 //--------------------------- First run, beginning of memory map ---------------------
+	Serial.print("Writing at location 0x");
+	Serial.println(writeaddress, HEX);
 	
     resultw = mymemory.writeByte(writeaddress, writevalue);
 	resultr = mymemory.readByte(writeaddress, &readvalue);
@@ -69,7 +71,11 @@ void setup() {
 	Serial.println(".... ....");
 	
 //-------------------------- Second run, end of the memory map -----------------------
-    resultw = mymemory.writeWord(writeaddress2, writevalue2);
+    
+	Serial.print("Writing at location 0x");
+	Serial.println(writeaddress2, HEX);
+	
+	resultw = mymemory.writeWord(writeaddress2, writevalue2);
 	resultr = mymemory.readWord(writeaddress2, &readvalue2);
 	
 	Serial.print("Written value 0x");
