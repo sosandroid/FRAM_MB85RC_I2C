@@ -23,6 +23,7 @@ Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when cons
 	- 4: Density human readable
 - Manage write protect pin
 - Erase memory (set all chip to 0x00)
+- Prevent cycling through memory map to avoid unwanted overwrites
 - Debug mode manageable from header file
 
 ## Revision History ##
@@ -37,8 +38,6 @@ Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when cons
 	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
 	v1.1.0b - Adding support for devices without device IDs + 4K & 16 K devices support
 	v1.1.0b1 - Fixing checkDevice() + end of range memory map check + better manual mode example
-
-
 
 ## Devices ##
 
@@ -108,13 +107,33 @@ The error management is eased by returning a byte value for almost each method. 
 ## Testing ##
 - Tested against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895
 - Tested on Arduino Mega with Arduino IDE 1.0.5 & 1.6.11
-
 - Please comment about other devices (Memory & Arduino Boards)
 
+- @Porcao reports on [issue #2](https://github.com/sosandroid/FRAM_MB85RC_I2C/issues/2) a 16k labelled MB85RC chip behaving like a 64K+ device with no device ID feature. This chip has been bought from China (Aliexpress). Seems to be a mislabelled device or anything else. If the tests fails with your chip, feel free to test other densities using the "Manual Mode" example.
+
 ## To do ##
-- testing all devices
+- Test all devices
 - Create a more robust error management (function to handle that with higher layer)
 - Rework the debug mode
 
+## Q&R ##
+Here some quick answers to some interesting questions:
+
+- **Does this lib suitable for some others devices not listed here ?** _It can. To understand the way the lib works, just have a look on the datasheets of MB85RC256V & MB85RC16V. They will let you know about the details. Some other chips, FRAM or not, may use the same logic : MB85RC series, FM24 series, CY15B series or even some 24LC memory chips_
+
+- **What if I run manual mode declaring another density than the one really embeded ?** _There is several options :_
+		- _You have a 128K chip and declaring 64K. There is no issue and you'll only use the first half of the memory map_
+		- _You have a 128K chip and declaring 16K or 4K. The memory address mamangement is not done the same way. This cannot work_
+		- _You have a 128K chip and declaring 256K. You'll be able to loop through the whole memory map and overwritting some data. The worst bugs ever_
+		- _You have a 16K chip and declaring 256K. The memory address mamangement is not done the same way. This cannot work_
+		
+- **Your chip or the lib does not behave as expected** _First check the datasheet to check either this is a lib bug or not. Using the various exmaples and playing around with settings would help. Have a look on [issue #2](https://github.com/sosandroid/FRAM_MB85RC_I2C/issues/2) to have ideas about some possible misbehavior's origins._
+
+- **My devices is not recognized automatically** _Please run the `ReadIDs.ino` example and `manual_mode.ino` example to find out your real chip capabilities._
+
+- **Your chip has device's IDs but not recognized by the lib** _Please open an issue to add it in the lib. Provide also all required data such as device's manufacturer, name, IDs and the tests done._
+
+- **Sleep mode & High speed mode are not supported** _ Those Cypress's features are not supported as they require a huge rework of the lib. At this time they seem to be out of scope._
+
 ## Credits ##
-- [Kevin Townsend](https://github.com/microbuilder) who wrote the very first [Adafruit Lib](https://github.com/adafruit/Adafruit_FRAM_I2C) of which this one is forked from
+- [Kevin Townsend](https://github.com/microbuilder) wrote the very first [Adafruit Lib](https://github.com/adafruit/Adafruit_FRAM_I2C) of which this one is forked.
