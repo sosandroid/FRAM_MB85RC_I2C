@@ -49,7 +49,7 @@ Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when cons
 |  **MB85RC16V** | 16 | 4 bits | No | - | 11 bits (2) | No |
 |  **MB85RC16** | 16 | 4 bits | No | - | 11 bits (2) | No |
 |  **MB85RC64V** | 64 | 7 bits | No | - | 13 bits | No |
-|  **MB85RC64A** | 64 | 7 bits | No | - | 13 bits | No |
+|  **MB85RC64A** | 64 | 7 bits | No | - | 13 bits | Yes |
 |  **MB85RC64TA** | 64 | 7 bits | Yes | 0x03 | 13 bits | No |
 |  **MB85RC128A** | 128 | 7 bits | No | - | 14 bits | No |
 |  **MB85RC256V** | 256 | 7 bits | Yes | 0x05 | 15 bits | Yes |
@@ -72,9 +72,9 @@ Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when cons
 |  **FM24V10** | 1024 | 6 bits | Yes | 0x04 | 17 bits (3) | No |	
 
 
-Note 1 : 4K devices have a 9 bits adressing memory map. The 9th bit is set in the device address bytes
+Note 1 : 4K devices have a 9 bits adressing memory map. The 9th bit is set in the device address byte
 
-Note 2 : 16K devices a 11 bits adressing memory map. The 3 MSB are set in the device address bytes in place of A2~A0
+Note 2 : 16K devices a 11 bits adressing memory map. The 3 MSB are set in the device address byte in place of A2~A0
 
 Note 3 : 1M a 17 bits adressing memory map. To manage this device, you need to consider it as 2 512K devices with 2 distincts adresses : 1010+A2+A1+0 and 1010+A2+A1+1. The library is set that way.
 
@@ -116,7 +116,7 @@ The error management is eased by returning a byte value for almost each method. 
 - Create a more robust error management (function to handle that with higher layer)
 - Rework the debug mode
 
-## Q&R ##
+## Q&A ##
 Here some quick answers to some interesting questions:
 
 - **Does this lib suitable for some others devices not listed here ?** _It can. To understand the way the lib works, just have a look on the datasheets of MB85RC256V & MB85RC16V. They will let you know about the details. Some other chips, FRAM or not, may use the same logic : MB85RC series, FM24 series, CY15B series or even some 24LC memory chips_
@@ -133,7 +133,8 @@ Here some quick answers to some interesting questions:
 
 - **Your chip has device's IDs but not recognized by the lib** _Please open an issue to add it in the lib. Provide also all required data such as device's manufacturer, name, IDs and the tests done._
 
-- **Sleep mode & High speed mode are not supported** _ Those Cypress's features are not supported as they require a huge rework of the lib. At this time they seem to be out of scope._
+- **Sleep mode & High speed mode are not supported** _Those Cypress's features are not supported as they require a huge rework of the lib. At this time they seem to be out of scope._
 
 ## Credits ##
 - [Kevin Townsend](https://github.com/microbuilder) wrote the very first [Adafruit Lib](https://github.com/adafruit/Adafruit_FRAM_I2C) of which this one is forked.
+- All testers who helped to improve this library
