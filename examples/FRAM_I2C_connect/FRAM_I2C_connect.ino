@@ -1,10 +1,10 @@
 /**************************************************************************/
 /*!
-    @file     FRAM_MB85RC_I2C_connect.ino
+    @file     FRAM_I2C_connect.ino
     @author   SOSAndroid (E. Ha.)
     @license  BSD (see license.txt)
 
-    Example sketch that connects and try to identify the device using the lib. The device's IDs will be output to Serial.
+    This sketch connects the FRAM chips and tries to identify it. This succeed if the IDs are known, fails otherwise
 
     @section  HISTORY
 

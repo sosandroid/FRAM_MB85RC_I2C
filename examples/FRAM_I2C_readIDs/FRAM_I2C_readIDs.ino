@@ -1,10 +1,10 @@
 /**************************************************************************/
 /*!
-    @file     FRAM_MB85RC_I2C_readIDs.ino
+    @file     FRAM_I2C_readIDs.ino
     @author   SOSAndroid (E. Ha.)
     @license  BSD (see license.txt)
 
-    This sketch is a try to identify clearly the FRAM device for debugging purpose. This does not use the lib
+    This sketch tries to read the devices IDs without the help of the library. For debugging purpose
 
     @section  HISTORY
 

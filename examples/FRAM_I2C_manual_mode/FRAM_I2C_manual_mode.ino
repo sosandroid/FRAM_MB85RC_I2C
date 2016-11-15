@@ -1,6 +1,6 @@
 /**************************************************************************/
 /*!
-    @file     FRAM_MB85RC_I2C_manual_mode_simple_write_read.ino
+    @file     FRAM_I2C_manual_mode.ino
     @author   SOSAndroid (E. Ha.)
     @license  BSD (see license.txt)
 

@@ -1,6 +1,6 @@
 /**************************************************************************/
 /*!
-    @file     FRAM_MB85RC_I2C_store_anything.ino
+    @file     FRAM_I2C_store_anything.ino
     @author   SOSAndroid (E. Ha.)
     @license  BSD (see license.txt)
 
@@ -56,7 +56,7 @@ void setup() {
 	mymemory.begin();
 		
 	
-	//init data - load array
+//---------init data - load array
 	mydata.datastruct.data_0 = true;
 	Serial.print("Data_0: ");
 	if (mydata.datastruct.data_0) Serial.println("true");
@@ -79,7 +79,7 @@ void setup() {
 
 
 
-	//write to FRAM chip
+//----------write to FRAM chip
 	byte result = mymemory.writeArray(writeaddress, arraySize, mydata.I2CPacket);
 
     if (result == 0) Serial.println("Write Done - array loaded in FRAM chip");
@@ -87,13 +87,13 @@ void setup() {
 	Serial.println("...... ...... ......");
 	
 	
-	//read data from memory chip
+//---------read data from memory chip
 	result = mymemory.readArray(writeaddress, arraySize, readdata.I2CPacket);
     if (result == 0) Serial.println("Read Done - array loaded with read data");
     if (result != 0) Serial.println("Read failed");
 	Serial.println("...... ...... ......");
 	
-	//Send data to serial
+//---------Send data to serial
 	Serial.print("Data_0: ");
 	if (readdata.datastruct.data_0) Serial.println("true");
 	if (!readdata.datastruct.data_0) Serial.println("false");
