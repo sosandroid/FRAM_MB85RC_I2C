@@ -906,7 +906,6 @@ void FRAM_MB85RC_I2C::I2CAddressAdapt(uint16_t framAddr) {
 	}
 	
 	#ifdef SERIAL_DEBUG
-		Serial.print("Calculated addr 0x");
 		Serial.println(chipaddress, HEX);
 	#endif
 	
