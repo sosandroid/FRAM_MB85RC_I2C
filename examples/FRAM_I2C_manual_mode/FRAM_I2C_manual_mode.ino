@@ -24,7 +24,7 @@
 	To read or write at 0x025 memory slot, the IC2 device address is 0b 1010 000 x. Which means 0x050
 	To read or write at 0x750 memory slot, the IC2 device address is 0b 1010 111 x. Which means 0x057
 	
-	The second bit send is
+	The second byte sent is
 		To read or write at 0x025 memory slot, (0b 000 00100101 & 0x000 11111111) => 0b 000 00100101 => 0x025
 		To read or write at 0x750 memory slot, (0b 111 01010000 & 0x000 11111111) => 0b 000 01010000 => 0x010
 		

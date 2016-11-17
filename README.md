@@ -88,6 +88,8 @@ All devices are pulling down internaly A2, A1 & A0. Default address is b1010000 
 
 16K devices does not have A2, A1 nor A0 support. This is used for memory addressing `i2c_addr = 0b1010000`
 
+An interesting [document](Docs/Fujitsu_FRAM_difference_addressing_scheme_over_I2C.pdf) from Fujitsu describe it quite well.
+
 
 
 ## Errors ##
@@ -121,11 +123,11 @@ Here some quick answers to some interesting questions:
 
 - **Does this lib suitable for some others devices not listed here ?** _It can. To understand the way the lib works, just have a look on the datasheets of MB85RC256V & MB85RC16V. They will let you know about the details. Some other chips, FRAM or not, may use the same logic : MB85RC series, FM24 series, CY15B series or even some 24LC memory chips_
 
-- **What if I run manual mode declaring another density than the one really embeded ?** _There is several options :_
-		- _You have a 128K chip and declaring 64K. There is no issue and you'll only use the first half of the memory map_
-		- _You have a 128K chip and declaring 16K or 4K. The memory address mamangement is not done the same way. This cannot work_
-		- _You have a 128K chip and declaring 256K. You'll be able to loop through the whole memory map and overwritting some data. The worst bugs ever_
-		- _You have a 16K chip and declaring 256K. The memory address mamangement is not done the same way. This cannot work_
+- **What if I run manual mode declaring another density than the one really embeded ?** _There are several options :_
+	- _You have a 128K chip and declaring 64K. There is no issue and you'll only use the first half of the memory map_
+	- _You have a 128K chip and declaring 16K or 4K. The memory address mamangement is not done the same way. This cannot work_
+	- _You have a 128K chip and declaring 256K. You'll be able to loop through the whole memory map and overwritting some data. The worst bugs ever_
+	- _You have a 16K chip and declaring 256K. The memory address mamangement is not done the same way. This cannot work_
 		
 - **Your chip or the lib does not behave as expected** _First check the datasheet to check either this is a lib bug or not. Using the various exmaples and playing around with settings would help. Have a look on [issue #2](https://github.com/sosandroid/FRAM_MB85RC_I2C/issues/2) to have ideas about some possible misbehavior's origins._
 
@@ -133,7 +135,7 @@ Here some quick answers to some interesting questions:
 
 - **Your chip has device's IDs but not recognized by the lib** _Please open an issue to add it in the lib. Provide also all required data such as device's manufacturer, name, IDs and the tests done._
 
-- **Sleep mode & High speed mode are not supported** _Those Cypress's features are not supported as they require a huge rework of the lib. At this time they seem to be out of scope._
+- **Sleep mode & High speed mode are not supported** _Those features are not supported at the moment as they require a huge rework of the lib. At this time they seem to be out of scope._
 
 ## Credits ##
 - [Kevin Townsend](https://github.com/microbuilder) wrote the very first [Adafruit Lib](https://github.com/adafruit/Adafruit_FRAM_I2C) of which this one is forked.
