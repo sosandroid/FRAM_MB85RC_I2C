@@ -88,7 +88,7 @@ All devices are pulling down internaly A2, A1 & A0. Default address is b1010000 
 
 16K devices does not have A2, A1 nor A0 support. This is used for memory addressing `i2c_addr = 0b1010000`
 
-An interesting [document](Docs/Fujitsu_FRAM_difference_addressing_scheme_over_I2C.pdf) from Fujitsu describe it quite well.
+An interesting [document](Docs/Fujitsu_FRAM_difference_addressing_scheme_over_I2C.pdf) from Fujitsu describes it quite well.
 
 
 
@@ -109,12 +109,12 @@ The error management is eased by returning a byte value for almost each method. 
 ## Testing ##
 - Tested against MB85RC256V - breakout board from Adafruit http://www.adafruit.com/product/1895
 - Tested on Arduino Mega with Arduino IDE 1.0.5 & 1.6.11
-- Please comment about other devices (Memory & Arduino Boards)
+- Please comment about other devices (Memory & Arduino Boards) - A specific [thread](https://github.com/sosandroid/FRAM_MB85RC_I2C/issues/3) has been opened.
 
 - @Porcao reports on [issue #2](https://github.com/sosandroid/FRAM_MB85RC_I2C/issues/2) a 16k labelled MB85RC chip behaving like a 64K+ device with no device ID feature. This chip has been bought from China (Aliexpress). Seems to be a mislabelled device or anything else. If the tests fails with your chip, feel free to test other densities using the "Manual Mode" example.
 
 ## To do ##
-- Test all devices
+- Test all devices - [Testing thread](https://github.com/sosandroid/FRAM_MB85RC_I2C/issues/3)
 - Create a more robust error management (function to handle that with higher layer)
 - Rework the debug mode
 
