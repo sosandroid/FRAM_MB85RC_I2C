@@ -4,7 +4,7 @@
     @author   SOSAndroid (E. Ha.)
     @license  BSD (see license.txt)
 
-    Example sketch to write & read "manual setting".
+    Sketch to write & read in memory using "manual setting". This will try to write at the beginning of the memory map (1 byte) and at the end of the memory map (2 bytes).
 
     @section  HISTORY
 
@@ -13,7 +13,9 @@
 	v1.1.1 - More detailed feedback to Serial + adaptation to any density + Explanation of what is going on for 16K chip.
 	
 	
-	A bit of mathematics, example of the 16K chip : chip address translation to match the datasheet.
+	A bit of mathematics, 
+	
+	Example of the 16K chip : chip address translation to match the datasheet.
 	write address 0x25 =>  0b 000 00100101
 	write address 0x750 => 0b 111 01010000
 	
@@ -44,6 +46,7 @@
 #include <Wire.h>
 #include <FRAM_MB85RC_I2C.h>
 
+//--------------------------- All variables setup -----------------------------------
 
 byte resultw, resultr; 
 //dummy data used for the test
@@ -60,12 +63,16 @@ uint16_t chipDensity = 16; //Just change that value to the density you want : 4,
 
 //random addresses to write from
 uint16_t writeaddress = 0x025; // Beginning of the memory map
-uint16_t writeaddress2 = (chipdensity * 128) - 80; // calculated regardind density to hit more or less the end of memory map
+uint16_t writeaddress2 = (chipdensity * 128) - 80; // calculated regarding density to hit more or less the end of memory map
 
+
+//--------------------------- Object creation ---------------------------------------
 
 //Creating object for FRAM chip
 FRAM_MB85RC_I2C mymemory(chipaddress, wp, pin, chipDensity);
 
+
+//--------------------------- Using Setup() to run the test --------------------------
 
 void setup() {
 
@@ -73,7 +80,7 @@ void setup() {
 	while (!Serial) ; //wait until Serial ready
 	Wire.begin();
 	
-    Serial.println("Starting...");
+	Serial.println("Starting...");
 
 	mymemory.begin();
 
@@ -82,7 +89,7 @@ void setup() {
 	Serial.print("Writing at location 0x");
 	Serial.println(writeaddress, HEX);
 	
-    Serial.println("Writing...");
+	Serial.println("Writing...");
 	resultw = mymemory.writeByte(writeaddress, writevalue);
 	Serial.println("Reading...");
 	resultr = mymemory.readByte(writeaddress, &readvalue);
@@ -106,7 +113,7 @@ void setup() {
 	Serial.print("Writing at location 0x");
 	Serial.println(writeaddress2, HEX);
 	
-    Serial.println("Writing...");
+	Serial.println("Writing...");
 	resultw = mymemory.writeWord(writeaddress2, writevalue2);
 	Serial.println("Reading...");
 	resultr = mymemory.readWord(writeaddress2, &readvalue2);
