@@ -11,6 +11,7 @@
     v1.0.0 - First release
 	V1.1.0 - Reworked code to test wider range of the memory
 	v1.1.1 - More detailed feedback to Serial + adaptation to any density + Explanation of what is going on for 16K chip.
+	v1.1.2 - Compilation error fix
 	
 	
 	A bit of mathematics, 
@@ -63,7 +64,7 @@ uint16_t chipDensity = 16; //Just change that value to the density you want : 4,
 
 //random addresses to write from
 uint16_t writeaddress = 0x025; // Beginning of the memory map
-uint16_t writeaddress2 = (chipdensity * 128) - 80; // calculated regarding density to hit more or less the end of memory map
+uint16_t writeaddress2 = (chipDensity * 128) - 80; // calculated regarding density to hit more or less the end of memory map
 
 
 //--------------------------- Object creation ---------------------------------------
