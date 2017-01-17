@@ -6,6 +6,8 @@ I2C Ferroelectric Random Access Memory (FRAM). Read/write endurance for each mem
 
 Supports 4K, 16K, 64K, 128K, 256K & 512K devices. Works for 1M devices when considering each device as 2 differents 512K devices
 
+For SPI chips, please have a look on [Christophe Persoz's repo](https://github.com/christophepersoz/FRAM_MB85RS_SPI)
+
 
 ## Features ##
 - Device settings detection (if Device ID feature is available)
