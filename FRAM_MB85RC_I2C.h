@@ -1,8 +1,8 @@
 /**************************************************************************/
-/*! 
+/*!
     @file     FRAM_MB85RC_I2C.h
     @author   SOSAndroid.fr (E. Ha.)
-	
+
     @section  HISTORY
 
     v1.0 - First release
@@ -14,7 +14,7 @@
 	v1.1.0b - adding support for devices without device IDs + 4K & 16 K devices support
 
     Driver for the MB85RC I2C FRAM from Fujitsu.
-	
+
     @section LICENSE
 
     Software License Agreement (BSD License)
@@ -103,7 +103,7 @@
 
 //Special commands
 #define MASTER_CODE	0xF8
-#define SLEEP_MODE	0x86 //Cypress codes, not used here	
+#define SLEEP_MODE	0x86 //Cypress codes, not used here
 #define HIGH_SPEED	0x08 //Cypress codes, not used here
 
 // Managing Write protect pin
@@ -112,7 +112,7 @@
 #define DEFAULT_WP_STATUS  false //false means protection is off - write is enabled
 
 // Error management
-#define ERROR_0 0 // Success    
+#define ERROR_0 0 // Success
 #define ERROR_1 1 // Data too long to fit the transmission buffer on Arduino
 #define ERROR_2 2 // received NACK on transmit of address
 #define ERROR_3 3 // received NACK on transmit of data
@@ -132,7 +132,7 @@ class FRAM_MB85RC_I2C {
 	FRAM_MB85RC_I2C(uint8_t address, boolean wp);
 	FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin);
 	FRAM_MB85RC_I2C(uint8_t address, boolean wp, int pin, uint16_t chipDensity);
-	
+
 	void	begin(void);
 	byte	checkDevice(void);
 	byte	readBit(uint16_t framAddr, uint8_t bitNb, byte *bit);
@@ -154,13 +154,13 @@ class FRAM_MB85RC_I2C {
 	byte	enableWP(void);
 	byte	disableWP(void);
 	byte	eraseDevice(void);
-  
+
  private:
 	uint8_t	i2c_addr;
 	boolean	_framInitialised;
 	boolean	_manualMode;
 	uint16_t	manufacturer;
-	uint16_t	productid; 
+	uint16_t	productid;
 	uint16_t	densitycode;
 	uint16_t	density;
 	uint16_t	maxaddress;
@@ -168,7 +168,7 @@ class FRAM_MB85RC_I2C {
 	int	wpPin;
 	boolean	wpStatus;
 
-	byte	getDeviceIDs(void);	
+	byte	getDeviceIDs(void);
 	byte	setDeviceIDs(void);
 	byte	initWP(boolean wp);
 	byte	deviceIDs2Serial(void);
