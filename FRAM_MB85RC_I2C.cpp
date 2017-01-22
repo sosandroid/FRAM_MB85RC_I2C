@@ -85,7 +85,7 @@ void FRAM_MB85RC_I2C::begin(void) {
 	
 	byte deviceFound = FRAM_MB85RC_I2C::checkDevice();
 
-    #ifdef SERIAL_DEBUG
+    #if defined(SERIAL_DEBUG) && (SERIAL_DEBUG == 1)
 		if (!Serial) Serial.begin(9600);
 		if (Serial){
 			Serial.println("FRAM_MB85RC_I2C object created");
@@ -625,7 +625,7 @@ byte FRAM_MB85RC_I2C::eraseDevice(void) {
 		}
 		
 	
-		#ifdef SERIAL_DEBUG
+		#if defined(SERIAL_DEBUG) && (SERIAL_DEBUG == 1)
 			if (Serial){
 				if (result !=0) {
 						Serial.print("ERROR: device erasing stopped at position ");
@@ -826,7 +826,7 @@ byte FRAM_MB85RC_I2C::setDeviceIDs(void)
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::deviceIDs2Serial(void) {
     byte result = ERROR_4;
-	#ifdef SERIAL_DEBUG
+	#if defined(SERIAL_DEBUG) && (SERIAL_DEBUG == 1)
 		if (Serial){
 			Serial.println("FRAM Device IDs");
 			Serial.print("Manufacturer 0x"); Serial.println(manufacturer, HEX);
@@ -905,7 +905,7 @@ void FRAM_MB85RC_I2C::I2CAddressAdapt(uint16_t framAddr) {
 			break;
 	}
 	
-	#ifdef SERIAL_DEBUG
+	#if defined(SERIAL_DEBUG) && (SERIAL_DEBUG == 1)
 		Serial.print("Calculated address 0x");
 		Serial.println(chipaddress, HEX);
 	#endif

@@ -57,7 +57,9 @@
 #include <Wire.h>
 
 // Enabling debug I2C - comment to disable / normal operations
-#define SERIAL_DEBUG
+#ifndef SERIAL_DEBUG
+#define SERIAL_DEBUG 1
+#endif
 
 // IDs
 //Manufacturers codes
