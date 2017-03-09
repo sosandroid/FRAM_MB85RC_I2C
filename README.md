@@ -48,7 +48,7 @@ For SPI chips, please have a look on [Christophe Persoz's repo](https://github.c
 |  Model | Density (kB) | Device addressing | Device ID feature | Density code | Memory addressing | Tested |
 |  ------ | :------: | :------: | :------: | :------: | :------: | :------: |
 |  **MB85RC04V** | 4 | 6 bits | Yes | 0x00 | 9 bits (1) | No |
-|  **MB85RC16V** | 16 | 4 bits | No | - | 11 bits (2) | No |
+|  **MB85RC16V** | 16 | 4 bits | No | - | 11 bits (2) | Yes |
 |  **MB85RC16** | 16 | 4 bits | No | - | 11 bits (2) | No |
 |  **MB85RC64V** | 64 | 7 bits | No | - | 13 bits | No |
 |  **MB85RC64A** | 64 | 7 bits | No | - | 13 bits | Yes |
@@ -65,7 +65,7 @@ For SPI chips, please have a look on [Christophe Persoz's repo](https://github.c
 |  **FM24CL04B** | 4 | 6 bits | No | - | 9 bits (1) | No |
 |  **FM24C04B** | 4 | 6 bits | No | - | 9 bits (1) | No |
 |  **FM24C16B** | 16 | 4 bits | No | - | 11 bits (2) | No |
-|  **FM24C64B** | 64 | 7 bits | No | - | 13 bits | No |
+|  **FM24C64B** | 64 | 7 bits | No | - | 13 bits | Yes |
 |  **FM24CL64B** | 64 | 7 bits | No | - | 13 bits | No |
 |  **CY15B128J** | 128 | 7 bits | Yes | 0x01 | 14 bits | No |
 |  **FM24W256** | 256 | 7 bits | No | - | 15 bits | No |
