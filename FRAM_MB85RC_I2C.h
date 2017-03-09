@@ -12,6 +12,7 @@
 	v1.0.4 - fix constructor call error
 	v1.0.5 - Enlarge density chip support by making check more flexible, Error codes not anymore hardcoded, add connect example, add Cypress FM24 & CY15B series comment.
 	v1.1.0b - adding support for devices without device IDs + 4K & 16 K devices support
+	v1.2.0 - Uses reinterpret_cast instead of bit shift / masking for performance. Breaks backward compatibility with previous code - See PR#6
 
     Driver for the MB85RC I2C FRAM from Fujitsu.
 	
