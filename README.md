@@ -49,38 +49,38 @@ For SPI chips, please have a look on [Christophe Persoz's repo](https://github.c
 
 |  Model | Density (kB) | Device addressing | Device ID feature | Density code | Memory addressing | Tested |
 |  ------ | :------: | :------: | :------: | :------: | :------: | :------: |
-|  **MB85RC04V** | 4 | 6 bits | Yes | 0x00 | 9 bits (1) | No |
-|  **MB85RC16V** | 16 | 4 bits | No | - | 11 bits (2) | Yes |
-|  **MB85RC16** | 16 | 4 bits | No | - | 11 bits (2) | No |
+|  **MB85RC04V** | 4 | 6 bits | Yes | 0x00 | 9 bits [^1] | No |
+|  **MB85RC16V** | 16 | 4 bits | No | - | 11 bits [^2] | Yes |
+|  **MB85RC16** | 16 | 4 bits | No | - | 11 bits [^2] | No |
 |  **MB85RC64V** | 64 | 7 bits | No | - | 13 bits | No |
 |  **MB85RC64A** | 64 | 7 bits | No | - | 13 bits | Yes |
 |  **MB85RC64TA** | 64 | 7 bits | Yes | 0x03 | 13 bits | No |
 |  **MB85RC128A** | 128 | 7 bits | No | - | 14 bits | No |
 |  **MB85RC256V** | 256 | 7 bits | Yes | 0x05 | 15 bits | Yes |
 |  **MB85RC512T** | 512 | 7 bits | Yes | 0x06 | 16 bits | No |
-|  **MB85RC1MT** | 1024 | 6 bits | Yes | 0x07 | 17 bits (3) | No |
+|  **MB85RC1MT** | 1024 | 6 bits | Yes | 0x07 | 17 bits [^3] | Yes |
 
 **Cypress FRAM** - manufacturer code 0x004 - [Cypress page](http://www.cypress.com/products/f-ram-serial)
 
 |  Model | Density (kB) | Device addressing | Device ID feature | Density code | Memory addressing | Tested |
 |  ------ | :------: | :------: | :------: | :------: | :------: | :------: |
-|  **FM24CL04B** | 4 | 6 bits | No | - | 9 bits (1) | Yes |
-|  **FM24C04B** | 4 | 6 bits | No | - | 9 bits (1) | No |
-|  **FM24C16B** | 16 | 4 bits | No | - | 11 bits (2) | No |
+|  **FM24CL04B** | 4 | 6 bits | No | - | 9 bits [^1] | Yes |
+|  **FM24C04B** | 4 | 6 bits | No | - | 9 bits [^1] | No |
+|  **FM24C16B** | 16 | 4 bits | No | - | 11 bits [^2] | No |
 |  **FM24C64B** | 64 | 7 bits | No | - | 13 bits | Yes |
 |  **FM24CL64B** | 64 | 7 bits | No | - | 13 bits | Yes |
 |  **CY15B128J** | 128 | 7 bits | Yes | 0x01 | 14 bits | No |
 |  **FM24W256** | 256 | 7 bits | No | - | 15 bits | No |
 |  **CY15B256J** | 256 | 7 bits | Yes | 0x02 | 15 bits | No |
 |  **FM24V05** | 512 | 7 bits | Yes | 0x03 | 16 bits | No |
-|  **FM24V10** | 1024 | 6 bits | Yes | 0x04 | 17 bits (3) | No |	
+|  **FM24V10** | 1024 | 6 bits | Yes | 0x04 | 17 bits [^3] | No |	
 
 
-Note 1 : 4K devices have a 9 bits adressing memory map. The 9th bit is set in the device address byte
+[^1]: 4K devices have a 9 bits adressing memory map. The 9th bit is set in the device address byte
 
-Note 2 : 16K devices a 11 bits adressing memory map. The 3 MSB are set in the device address byte in place of A2~A0
+[^2]: 16K devices a 11 bits adressing memory map. The 3 MSB are set in the device address byte in place of A2~A0
 
-Note 3 : 1M a 17 bits adressing memory map. To manage this device, you need to consider it as 2 512K devices with 2 distincts adresses : 1010+A2+A1+0 and 1010+A2+A1+1. The library is set that way.
+[^3]: 1M a 17 bits adressing memory map. To manage this device, you need to consider it as 2 512K devices with 2 distincts adresses : 1010+A2+A1+0 and 1010+A2+A1+1. The library is set that way.
 
 
 ## Adresses ##
@@ -115,7 +115,7 @@ The error management is eased by returning a byte value for almost each method. 
 - Tested on Arduino Mega with Arduino IDE 1.0.5 & 1.6.11
 - Please comment about other devices (Memory & Arduino Boards) - A specific [thread](https://github.com/sosandroid/FRAM_MB85RC_I2C/issues/3) has been opened.
 
-- @Porcao reports on [issue #2](https://github.com/sosandroid/FRAM_MB85RC_I2C/issues/2) a 16k labelled MB85RC chip behaving like a 64K+ device with no device ID feature. This chip has been bought from China (Aliexpress). Seems to be a mislabelled device or anything else. If the tests fails with your chip, feel free to test other densities using the "Manual Mode" example.
+- While testing your device, please use the manual mode & the readIDs examples
 
 ## To do ##
 - Test all devices - [Testing thread](https://github.com/sosandroid/FRAM_MB85RC_I2C/issues/3)
@@ -142,6 +142,6 @@ Here some quick answers to some interesting questions:
 - **Sleep mode & High speed mode are not supported** _Those features are not supported at the moment as they require a huge rework of the lib. At this time they seem to be out of scope._
 
 ## Credits ##
-- [@Palatis](https://github.com/Palatis) for performance optimisation and debugging PRs
 - [Kevin Townsend](https://github.com/microbuilder) wrote the very first [Adafruit Lib](https://github.com/adafruit/Adafruit_FRAM_I2C) of which this one is forked.
 - All testers who helped to improve this library
+- [@Palatis](https://github.com/Palatis) for performance optimisation and debugging PRs
