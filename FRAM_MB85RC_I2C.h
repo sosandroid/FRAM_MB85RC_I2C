@@ -90,8 +90,8 @@
 #define MAXADDRESS_64 8192
 #define MAXADDRESS_128 16384
 #define MAXADDRESS_256 32768
-#define MAXADDRESS_512 65536
-#define MAXADDRESS_1024 65536 // 1M devices are in fact managed as 2 512 devices from lib point of view > create 2 instances of the object with each a differnt address
+#define MAXADDRESS_512 65535
+#define MAXADDRESS_1024 65535 // 1M devices are in fact managed as 2 512 devices from lib point of view > create 2 instances of the object with each a differnt address
 
 // Adresses
 #define MB85RC_ADDRESS_A000   0x50
