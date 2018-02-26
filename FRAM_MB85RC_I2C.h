@@ -73,7 +73,7 @@
 // The density codes gives the memory's adressing scheme
 #define DENSITY_MB85RC04V 0x00		// 4K
 #define DENSITY_MB85RC64TA 0x03		// 64K
-#define DENSITY_MB85RC256V 0x05		// 512K
+#define DENSITY_MB85RC256V 0x05		// 256K
 #define DENSITY_MB85RC512T 0x06		// 512K
 #define DENSITY_MB85RC1MT 0x07		// 1M
 
