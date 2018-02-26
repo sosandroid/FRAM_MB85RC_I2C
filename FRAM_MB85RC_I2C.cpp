@@ -17,6 +17,7 @@
 	v1.1.0b - adding support for devices without device IDs + 4K & 16 K devices support
 	v1.1.0b1 - Fixing checkDevice() + end of range memory map check
 	v1.2.0 - Uses reinterpret_cast instead of bit shift / masking for performance. Breaks backward compatibility with previous code - See PR#6
+	v1.2.1 - Fix comment line #76 (issue #11), max address define statement for 512K & 1M chips (issue 13), 0b000XXXXXXXX on <64kb device (issue #10)
 */
 /**************************************************************************/
 
@@ -117,8 +118,9 @@ void FRAM_MB85RC_I2C::begin(void) {
 
 /**************************************************************************/
 /*!
-    Check if device is connected at address @i2c_addr
-	returns 0 = device found
+    @brief Check if device is connected at address @i2c_addr
+	
+	@returns 0 = device found
 			7 = device not found
 */
 /**************************************************************************/
@@ -892,10 +894,12 @@ void FRAM_MB85RC_I2C::I2CAddressAdapt(uint16_t framAddr) {
 	
 	switch(density) {
 		case 4:
-			chipaddress = (i2c_addr | ((framAddr >> 8) & 0x1));
+			//chipaddress = (i2c_addr | ((framAddr >> 8) & 0x1)); //Issue #10
+			i2c_addr = ((i2c_addr & 0b11111110) | ((framAddr >> 8) & 0b00000001));
 			break;
 		case 16:
-			chipaddress = (i2c_addr | ((framAddr >> 8) & 0x7));
+			//chipaddress = (i2c_addr | ((framAddr >> 8) & 0x7)); 	//Issue #10
+			i2c_addr = ((i2c_addr & 0b11111000) | ((framAddr >> 8) & 0b00000111));
 			break;
 		default:
 			chipaddress = i2c_addr;
@@ -908,11 +912,11 @@ void FRAM_MB85RC_I2C::I2CAddressAdapt(uint16_t framAddr) {
 	#endif
 	
 	if (density < 64) {
-		Wire.beginTransmission(chipaddress);
+		Wire.beginTransmission(i2c_addr);
 		Wire.write(framAddr & 0xFF);
 	}
 	else {
-		Wire.beginTransmission(chipaddress);
+		Wire.beginTransmission(i2c_addr);
 		Wire.write(framAddr >> 8);
 		Wire.write(framAddr & 0xFF);	
 	}

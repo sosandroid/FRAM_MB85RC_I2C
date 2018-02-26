@@ -41,6 +41,7 @@ For SPI chips, please have a look on [Christophe Persoz's repo](https://github.c
 	v1.1.0b - Adding support for devices without device IDs + 4K & 16 K devices support
 	v1.1.0b1 - Fixing checkDevice() + end of range memory map check + better manual mode example
 	v1.2.0 - Uses reinterpret_cast instead of bit shift / masking for performance. Breaks backward compatibility with previous code - See PR#6
+	v1.2.1 - Fix issue #11, issue #13, issue #10, Updating tested chips table
 
 ## Devices ##
 
@@ -63,11 +64,11 @@ For SPI chips, please have a look on [Christophe Persoz's repo](https://github.c
 
 |  Model | Density (kB) | Device addressing | Device ID feature | Density code | Memory addressing | Tested |
 |  ------ | :------: | :------: | :------: | :------: | :------: | :------: |
-|  **FM24CL04B** | 4 | 6 bits | No | - | 9 bits (1) | No |
+|  **FM24CL04B** | 4 | 6 bits | No | - | 9 bits (1) | Yes |
 |  **FM24C04B** | 4 | 6 bits | No | - | 9 bits (1) | No |
 |  **FM24C16B** | 16 | 4 bits | No | - | 11 bits (2) | No |
 |  **FM24C64B** | 64 | 7 bits | No | - | 13 bits | Yes |
-|  **FM24CL64B** | 64 | 7 bits | No | - | 13 bits | No |
+|  **FM24CL64B** | 64 | 7 bits | No | - | 13 bits | Yes |
 |  **CY15B128J** | 128 | 7 bits | Yes | 0x01 | 14 bits | No |
 |  **FM24W256** | 256 | 7 bits | No | - | 15 bits | No |
 |  **CY15B256J** | 256 | 7 bits | Yes | 0x02 | 15 bits | No |
@@ -141,5 +142,6 @@ Here some quick answers to some interesting questions:
 - **Sleep mode & High speed mode are not supported** _Those features are not supported at the moment as they require a huge rework of the lib. At this time they seem to be out of scope._
 
 ## Credits ##
+- [@Palatis](https://github.com/Palatis) for performance optimisation and debugging PRs
 - [Kevin Townsend](https://github.com/microbuilder) wrote the very first [Adafruit Lib](https://github.com/adafruit/Adafruit_FRAM_I2C) of which this one is forked.
 - All testers who helped to improve this library
