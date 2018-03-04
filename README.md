@@ -58,14 +58,14 @@ For SPI chips, please have a look on [Christophe Persoz's repo](https://github.c
 |  **MB85RC128A** | 128 | 7 bits | No | - | 14 bits | No |
 |  **MB85RC256V** | 256 | 7 bits | Yes | 0x05 | 15 bits | Yes |
 |  **MB85RC512T** | 512 | 7 bits | Yes | 0x06 | 16 bits | No |
-|  **MB85RC1MT** | 1024 | 6 bits | Yes | 0x07 | 17 bits [^3] | Yes |
+|  **MB85RC1MT** | 1024 | 6 bits | Yes | 0x07 | 17 bits [3] | Yes |
 
 **Cypress FRAM** - manufacturer code 0x004 - [Cypress page](http://www.cypress.com/products/f-ram-serial)
 
 |  Model | Density (kB) | Device addressing | Device ID feature | Density code | Memory addressing | Tested |
 |  ------ | :------: | :------: | :------: | :------: | :------: | :------: |
 |  **FM24CL04B** | 4 | 6 bits | No | - | 9 bits [1] | Yes |
-|  **FM24C04B** | 4 | 6 bits | No | - | 9 bits [1] | No |
+|  **FM24C04B** | 4 | 6 bits | No | - | 9 bits [1] | Yes |
 |  **FM24C16B** | 16 | 4 bits | No | - | 11 bits [2] | No |
 |  **FM24C64B** | 64 | 7 bits | No | - | 13 bits | Yes |
 |  **FM24CL64B** | 64 | 7 bits | No | - | 13 bits | Yes |
