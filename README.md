@@ -73,7 +73,7 @@ For SPI chips, please have a look on [Christophe Persoz's repo](https://github.c
 |  **FM24W256** | 256 | 7 bits | No | - | 15 bits | No |
 |  **CY15B256J** | 256 | 7 bits | Yes | 0x02 | 15 bits | No |
 |  **FM24V05** | 512 | 7 bits | Yes | 0x03 | 16 bits | No |
-|  **FM24V10** | 1024 | 6 bits | Yes | 0x04 | 17 bits [3] | No |	
+|  **FM24V10** | 1024 | 6 bits | Yes | 0x04 | 17 bits [3] | Yes |	
 
 
 [1]: 4K devices have a 9 bits addressing memory map. The 9th bit is set in the device address byte
