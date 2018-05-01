@@ -49,7 +49,7 @@ For SPI chips, please have a look on [Christophe Persoz's repo](https://github.c
 
 |  Model | Density (kB) | Device addressing | Device ID feature | Density code | Memory addressing | Tested |
 |  ------ | :------: | :------: | :------: | :------: | :------: | :------: |
-|  **MB85RC04V** | 4 | 6 bits | Yes | 0x00 | 9 bits [1] | No |
+|  **MB85RC04V** | 4 | 6 bits | Yes | 0x00 | 9 bits [1] | Yes |
 |  **MB85RC16V** | 16 | 4 bits | No | - | 11 bits [2] | Yes |
 |  **MB85RC16** | 16 | 4 bits | No | - | 11 bits [2] | No |
 |  **MB85RC64V** | 64 | 7 bits | No | - | 13 bits | No |
