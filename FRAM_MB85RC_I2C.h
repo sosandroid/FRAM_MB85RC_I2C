@@ -14,6 +14,7 @@
 	v1.1.0b - adding support for devices without device IDs + 4K & 16 K devices support
 	v1.2.0 - Uses reinterpret_cast instead of bit shift / masking for performance. Breaks backward compatibility with previous code - See PR#6
 	v1.2.1 - Fix comment line #76 (issue #11), max address define statement for 512K & 1M chips (issue 13)
+	v1.2.2 - Fix issue #16
 
     Driver for the MB85RC I2C FRAM from Fujitsu.
 	
@@ -123,7 +124,7 @@
 #define ERROR_4 4 // Serial seems not available
 #define ERROR_5 5 // Not referenced device ID
 #define ERROR_6 6 // Unused
-#define ERROR_7 6 // Fram chip unidentified
+#define ERROR_7 7 // Fram chip unidentified
 #define ERROR_8 8 // Number of bytes asked to read null
 #define ERROR_9 9 // Bit position out of range
 #define ERROR_10 10 // Not permitted opération
