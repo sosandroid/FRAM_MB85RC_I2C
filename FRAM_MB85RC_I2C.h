@@ -112,7 +112,7 @@
 #define HIGH_SPEED	0x08 //Cypress codes, not used here
 
 // Managing Write protect pin
-#define MANAGE_WP false //false if WP pin remains not connected
+#define MANAGE_WP true //false if WP pin remains not connected
 #define DEFAULT_WP_PIN	13 //write protection pin - active high, write enabled when low
 #define DEFAULT_WP_STATUS  false //false means protection is off - write is enabled
 
