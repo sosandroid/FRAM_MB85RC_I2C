@@ -164,7 +164,7 @@ byte FRAM_MB85RC_I2C::checkDevice(void)
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::writeArray (uint16_t framAddr, byte items, uint8_t values[])
 {
-	if ((framAddr >= maxaddress) || ((framAddr + (uint16_t) items - 1) >= maxaddress)) return ERROR_11;
+	if ((framAddr > maxaddress) || ((framAddr + (uint16_t) items - 1) > maxaddress)) return ERROR_11;
 	
 	
 	FRAM_MB85RC_I2C::I2CAddressAdapt(framAddr);
@@ -215,7 +215,7 @@ byte FRAM_MB85RC_I2C::writeByte (uint16_t framAddr, uint8_t value)
 /**************************************************************************/
 byte FRAM_MB85RC_I2C::readArray (uint16_t framAddr, byte items, uint8_t values[])
 {
-	if ((framAddr >= maxaddress) || ((framAddr + (uint16_t) items - 1) >= maxaddress)) return ERROR_11;
+	if ((framAddr > maxaddress) || ((framAddr + (uint16_t) items - 1) > maxaddress)) return ERROR_11;
 	
 	byte result;
 	if (items == 0) {
