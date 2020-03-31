@@ -67,6 +67,7 @@ For SPI chips, please have a look on [Christophe Persoz's repo](https://github.c
 |  **FM24CL04B** | 4 | 6 bits | No | - | 9 bits [1] | Yes |
 |  **FM24C04B** | 4 | 6 bits | No | - | 9 bits [1] | Yes |
 |  **FM24C16B** | 16 | 4 bits | No | - | 11 bits [2] | No |
+|  **FM24CL16B** | 16 | 4 bits | No | - | 11 bits [2] | Yes |
 |  **FM24C64B** | 64 | 7 bits | No | - | 13 bits | Yes |
 |  **FM24CL64B** | 64 | 7 bits | No | - | 13 bits | Yes |
 |  **CY15B128J** | 128 | 7 bits | Yes | 0x01 | 14 bits | No |
