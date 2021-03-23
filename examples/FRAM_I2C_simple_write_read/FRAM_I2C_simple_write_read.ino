@@ -9,7 +9,8 @@
     @section  HISTORY
 
     v1.0.0 - First release
-	V1.1.0 - Reworked code to test wider range of the memory
+    V1.1.0 - Reworked code to test wider range of the memory
+    v1.1.1 - Fix issue #20
 	
 		
 */
@@ -30,7 +31,7 @@ uint16_t writeaddress = 0x025; // Beginning of the memory map
 
 
 //Creating object for FRAM chip
-FRAM_MB85RC_I2C mymemory();
+FRAM_MB85RC_I2C mymemory;
 
 
 void setup() {

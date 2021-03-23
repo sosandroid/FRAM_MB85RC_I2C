@@ -8,7 +8,7 @@
 
     @section  HISTORY
 
-    v1.0 - First release
+	v1.0 - First release
 	v1.0.1 - Robustness enhancement
 	v1.0.2 - fix constructor, introducing byte move in memory
 	v1.0.3 - fix writeLong() function
@@ -18,6 +18,7 @@
 	v1.1.0b1 - Fixing checkDevice() + end of range memory map check
 	v1.2.0 - Uses reinterpret_cast instead of bit shift / masking for performance. Breaks backward compatibility with previous code - See PR#6
 	v1.2.1 - Fix comment line #76 (issue #11), max address define statement for 512K & 1M chips (issue 13), 0b000XXXXXXXX on <64kb device (issue #10)
+	v1.3.0 - Fix access to las byte of memory map by @marmik18 - Commit 690a9ac
 */
 /**************************************************************************/
 
