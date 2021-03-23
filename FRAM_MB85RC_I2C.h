@@ -61,7 +61,7 @@
 
 // Enabling debug I2C - comment to disable / normal operations
 #ifndef SERIAL_DEBUG
-#define SERIAL_DEBUG 1
+#define SERIAL_DEBUG 0
 #endif
 
 // IDs
